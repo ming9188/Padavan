@@ -322,7 +322,7 @@ EOF
 ### \$1 - WAN action (up/down)
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
-
+mtk_gpio -d 6 0
 EOF
 		chmod 755 "$script_postw"
 	fi
