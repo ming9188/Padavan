@@ -322,9 +322,17 @@ EOF
 ### \$1 - WAN action (up/down)
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
-
-
+mtk_gpio -d 6 0
+serverchan_sckey='SCU106887T896f05b353d13cd788459610110262705f196a77555a4'
 EOF
+
+echo "while [ -z \"\$hostIP6\" ];"   >> "$script_postw"
+echo "do"  >> "$script_postw"
+echo "hostIP6=\`ip addr | awk '/:.* global/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:8880  /p'\`" >> "$script_postw"
+echo "sleep 60"  >> "$script_postw"
+echo "done"  >> "$script_postw"
+echo "curl -L -s \"http://sc.ftqq.com/\$serverchan_sckey.send?text=【IPV6】\" -d \"&desp=\${hostIP6}\" "  >> "$script_postw"
+
 		chmod 755 "$script_postw"
 	fi
 
