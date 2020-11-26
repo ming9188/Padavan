@@ -322,17 +322,7 @@ EOF
 ### \$1 - WAN action (up/down)
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
-### shutdown led_red
-mtk_gpio -d 6 0
-### wechat push IPV6
-serverchan_sckey='SCU106887T896f05b353d13cd788459610110262705f196a77555a4'
 
-while [ -z "$hostIP6" ];
-do
- hostIP6=`ip addr | awk '/:.* global/{print $2}'  |  awk -F/ '{print $1}' | sed -n 's/^.*/http:\/\/[&]:8880  /p'`
- sleep 60
-done
-curl -L -s "http://sc.ftqq.com/$serverchan_sckey.send?text=【IPV6】" -d "&desp=${hostIP6}" 
 
 EOF
 		chmod 755 "$script_postw"
