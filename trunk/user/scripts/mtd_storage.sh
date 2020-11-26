@@ -323,16 +323,12 @@ EOF
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
 mtk_gpio -d 6 0
-
 serverchan_sckey='SCU106887T896f05b353d13cd788459610110262705f196a77555a4'
-hostIP6=`ip addr | awk '/:.* global/{print $2}'  |  awk -F/ '{print $1}' | sed -n 's/^.*/http:\/\/[&]:8880  /p'`
+
 while [ -z "$hostIP6" ];
 do
  hostIP6=`ip addr | awk '/:.* global/{print $2}'  |  awk -F/ '{print $1}' | sed -n 's/^.*/http:\/\/[&]:8880  /p'`
  sleep 60
- if [  ! -z "$hostIP6" ];then
-       break
-  fi
 done
 curl -L -s "http://sc.ftqq.com/$serverchan_sckey.send?text=【IPV6】" -d "&desp=${hostIP6}" 
 
