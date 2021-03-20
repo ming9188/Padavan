@@ -340,7 +340,7 @@ echo "\`ip -6 neighbor show | grep -i  \$1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\
 		cat > "$script_ipv6" <<EOF
 #!/bin/sh
 
-### 显示内网ipv6
+### show ipv6
 ### show neighbor`s ipv6
 
 #wing resume
