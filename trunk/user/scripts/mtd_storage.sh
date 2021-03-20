@@ -309,6 +309,8 @@ EOF
 ### Called after internal iptables reconfig (firewall update)
 
 #wing resume
+ip6tables -I FORWARD -p tcp --dport 3389 -j ACCEPT
+ip6tables -I FORWARD -p tcp --dport 8829 -j ACCEPT
 
 EOF
 		chmod 755 "$script_postf"
