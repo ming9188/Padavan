@@ -207,6 +207,8 @@ func_fill()
 	script_vpnsc="$dir_storage/vpns_client_script.sh"
 	script_vpncs="$dir_storage/vpnc_server_script.sh"
 	script_ezbtn="$dir_storage/ez_buttons_script.sh"
+	script_gipv6="$dir_storage/getipv6.sh"
+	script_ipv6="$dir_storage/ipv6.sh"
 
 	user_hosts="$dir_dnsmasq/hosts"
 	user_dnsmasq_conf="$dir_dnsmasq/dnsmasq.conf"
@@ -311,6 +313,41 @@ EOF
 EOF
 		chmod 755 "$script_postf"
 	fi
+
+
+
+# create getipv6 script
+
+	if [ ! -f "$script_gipv6" ] ; then
+		cat > "$script_gipv6" <<EOF
+#!/bin/sh
+
+### Custom user script
+### get the neighbor`s ipv6
+
+#wing resume
+
+EOF
+echo "ip -6 neighbor show | grep -i  $1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\2/p' | grep 240e |tail -n 1" >> "$script_gipv6"
+		chmod 755 "$script_gipv6"
+	fi
+
+# create ipv6 script
+
+	if [ ! -f "$script_ipv6" ] ; then
+		cat > "$script_ipv6" <<EOF
+#!/bin/sh
+
+### Custom user script
+### show neighbor`s ipv6
+
+#wing resume
+
+EOF
+echo "cat /tmp/static_ip.inf | grep -v  "\""^$"\"" | awk -F "\"","\"" ' { sh "\""/etc/storage/getIPV6.sh "\"" \$2 |getline result;if ( \$6 == 0 ) print \$1,result "\"","\""\$3} '" >> "$script_ipv6"
+		chmod 755 "$script_ipv6"
+	fi
+
 
 	# create post-wan script
 	if [ ! -f "$script_postw" ] ; then
