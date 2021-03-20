@@ -346,7 +346,7 @@ echo "ip -6 neighbor show | grep -i  $1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\2/p
 #wing resume
 
 EOF
-echo "cat /tmp/static_ip.inf | grep -v  "\""^$"\"" | awk -F "\"","\"" ' { sh "\""/etc/storage/getIPV6.sh "\"" \$2 |getline result;if ( \$6 == 0 ) print \$1,result "\"","\""\$3} '" >> "$script_ipv6"
+echo "cat /tmp/static_ip.inf | grep -v  "\""^$"\"" | awk -F "\"","\"" ' { sh "\""/etc/storage/getipv6.sh "\"" \$2 |getline result;if ( \$6 == 0 ) print \$1,result "\"","\""\$3} '" >> "$script_ipv6"
 		chmod 755 "$script_ipv6"
 	fi
 
