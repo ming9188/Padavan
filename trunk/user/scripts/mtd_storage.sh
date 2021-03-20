@@ -316,19 +316,18 @@ EOF
 		chmod 755 "$script_postf"
 	fi
 
-
-# create getipv6 script
+# create gipv6 script
 
 if [ ! -f "$script_gipv6" ] ; then
 		cat > "$script_gipv6" <<EOF
 #!/bin/sh
 
-### get ipv6
-### get the neighbor`s ipv6
+### Custom user script
+### getipv6
+#wing resume
 ip -6 neighbor show | grep -i  \$1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\2/p' | grep 240e |tail -n 1
 
 EOF
-
 		chmod 755 "$script_gipv6"
 fi
 
@@ -338,14 +337,12 @@ if [ ! -f "$script_ipv6" ] ; then
 		cat > "$script_ipv6" <<EOF
 #!/bin/sh
 
-### show ipv6
-### show neighbor`s ipv6
-
+### Custom user script
+### showipv6
 #wing resume
-cat /tmp/static_ip.inf | grep -v  "^$" | awk -F "," ' { sh "/etc/storage/getipv6.sh " \$2 |getline result;if ( \$6 == 0 ) print \$1,result ","\$3} '
+ip -6 neighbor show | grep -i  \$1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\2/p' | grep 240e |tail -n 1
 
 EOF
-
 		chmod 755 "$script_ipv6"
 fi
 
