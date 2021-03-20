@@ -330,7 +330,7 @@ EOF
 #wing resume
 
 EOF
-echo "ip -6 neighbor show | grep -i  \$1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\2/p' | grep 240e |tail -n 1" >> "$script_gipv6"
+echo "\`ip -6 neighbor show | grep -i  \$1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\2/p' | grep 240e |tail -n 1\`" >> "$script_gipv6"
 		chmod 755 "$script_gipv6"
 	fi
 
