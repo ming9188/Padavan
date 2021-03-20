@@ -324,13 +324,13 @@ EOF
 		cat > "$script_gipv6" <<EOF
 #!/bin/sh
 
-### Custom user script
+### 获取内网ipv6
 ### get the neighbor`s ipv6
 
 #wing resume
 
 EOF
-echo "ip -6 neighbor show | grep -i  $1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\2/p' | grep 240e |tail -n 1" >> "$script_gipv6"
+echo "ip -6 neighbor show | grep -i  \$1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\2/p' | grep 240e |tail -n 1" >> "$script_gipv6"
 		chmod 755 "$script_gipv6"
 	fi
 
@@ -340,7 +340,7 @@ echo "ip -6 neighbor show | grep -i  $1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\2/p
 		cat > "$script_ipv6" <<EOF
 #!/bin/sh
 
-### Custom user script
+### 显示内网ipv6
 ### show neighbor`s ipv6
 
 #wing resume
