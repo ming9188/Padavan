@@ -17,7 +17,9 @@
 <script>
 var $j = jQuery.noConflict();
 
-<% login_state_hook(); %>
+function login_safe() { return 1; }
+function login_ip_str() { return '192.168.2.5'; }
+function login_mac_str() { return 'E0:AC:CB:8A:75:C6'; }
 
 function initial(){
 	show_banner(1);
@@ -51,8 +53,8 @@ function getResponse(){
 }
 
 function startPost(){
-	//if (!login_safe())
-		//return false;
+	if (!login_safe())
+		return false;
 	$j('#btn_exec').attr('disabled', 'disabled');
 	$j.post('/apply.cgi',
 	{
