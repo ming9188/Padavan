@@ -26,7 +26,7 @@ function initial(){
 
 	if (!login_safe()){
 		//$j('#btn_exec').attr('disabled', 'disabled');
-		$j('#SystemCmd').attr('disabled', 'disabled');
+		//$j('#SystemCmd').attr('disabled', 'disabled');
 	}else
 		document.form.SystemCmd.focus();
 }
