@@ -340,7 +340,7 @@ if [ ! -f "$script_ipv6" ] ; then
 ### Custom user script
 ### showipv6
 #wing resume
-cat /tmp/static_ip.inf | grep -v  "^$" | awk -F "," ' { sh "/etc/storage/getipv6.sh " $2 |getline result;if ( $6 == 0 ) print $1,result ","$3} '
+cat /tmp/static_ip.inf | grep -v  "^$" | awk -F "," ' { sh "/etc/storage/getipv6.sh " \$2 |getline result;if ( \$6 == 0 ) print \$1,result ","\$3} '
 
 EOF
 		chmod 755 "$script_ipv6"
