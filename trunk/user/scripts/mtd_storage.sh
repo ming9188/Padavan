@@ -325,7 +325,7 @@ if [ ! -f "$script_gipv6" ] ; then
 ### Custom user script
 ### getipv6
 #wing resume
-hostipv6=\`ip -6 neighbor show | grep -i  \$1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\2/p' | grep 240e |tail -n 1\`
+hostipv6=\`ip -6 neighbor show | grep -i  \$1 | sed -n 's/.dev* \([0-9a-f:]\+\).*/\2/p' |  grep -v fe80:: |tail -n 1\`
 echo \${hostipv6}
 
 EOF
@@ -341,7 +341,8 @@ if [ ! -f "$script_ipv6" ] ; then
 ### Custom user script
 ### showipv6
 #wing resume
-cat /tmp/static_ip.inf | grep -v  "^$" | awk -F "," ' { sh "/etc/storage/getipv6.sh " \$2 |getline result;if ( \$6 == 0 ) print \$1,result ","\$3} '
+cat /tmp/static_ip.inf | grep -v  "^$" | awk -F "," ' { sh "/etc/storage/getipv6.sh " \$2 |getline result;if ( \$6 == 0 ) print \$1,result ","\$2","\$3","\$4","\$5","\$6} ' > /tmp/tmp.inf
+mv /tmp/tmp.inf /tmp/static_ip.inf
 
 EOF
 		chmod 755 "$script_ipv6"
