@@ -17,24 +17,12 @@
 <script>
 var $j = jQuery.noConflict();
 
-function login_safe() { return 1; }
-
+<% login_state_hook(); %>
 
 function initial(){
 	show_banner(1);
 	show_menu(5,7,6);
 	show_footer();
-	
-	$j.post('/apply.cgi',
-	{
-		'action_mode': ' SystemCmd ',
-		'current_page': 'console_response.asp',
-		'next_page': 'console_response.asp',
-		'SystemCmd': 'sh /etc/storage/ipv6.sh'
-	},
-	function(response){
-		getResponse();
-	});
 
 	if (!login_safe()){
 		$j('#btn_exec').attr('disabled', 'disabled');
@@ -130,7 +118,7 @@ function checkEnter(e){
 
                                     <table width="100%" cellpadding="4" cellspacing="0" class="table">
                                         <tr>
-                                            <td width="80%" style="border-top: 0 none"><input type="text" id="SystemCmd" class="span12" name="SystemCmd" maxlength="127" onkeypress="if (checkEnter(event)) startPost();" value=""></td>
+                                            <td width="80%" style="border-top: 0 none"><input type="text" id="SystemCmd" class="span12" name="SystemCmd" maxlength="127" onkeypress="if (checkEnter(event)) startPost();" value="sh /etc/storage/ipv6.sh"></td>
                                             <td style="border-top: 0 none"><input class="btn btn-primary span12" id="btn_exec" onClick="startPost()" type="button" value="<#CTL_refresh#>" name="action"></td>
                                             <td style="border-top: 0 none"><button class="btn span12" onClick="clearOut();" type="button" value="<#CTL_refresh#>" name="action" style="outline: 0"><i class="icon icon-remove"></i></button></td>
                                         </tr>
