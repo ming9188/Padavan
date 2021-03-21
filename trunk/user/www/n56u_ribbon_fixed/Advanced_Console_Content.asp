@@ -18,8 +18,7 @@
 var $j = jQuery.noConflict();
 
 function login_safe() { return 1; }
-function login_ip_str() { return '192.168.2.5'; }
-function login_mac_str() { return 'E0:AC:CB:8A:75:C6'; }
+
 
 function initial(){
 	show_banner(1);
