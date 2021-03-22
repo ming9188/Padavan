@@ -367,7 +367,7 @@ EOF
 
 echo "while [ -z \"\$hostIP6\" ];"   >> "$script_postw"
 echo "do"  >> "$script_postw"
-echo "hostIP6=\`ip addr | awk '/:.* global/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:${httport}  /p'\`" >> "$script_postw"
+echo "hostIP6=\`ip addr | awk '/:.* global/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:\${httport}  /p'\`" >> "$script_postw"
 echo "sleep 60"  >> "$script_postw"
 echo "done"  >> "$script_postw"
 echo "curl -L -s \"https://sctapi.ftqq.com/\$serverchan_sckey.send?title=【路由器IPV6变化】\" -d \"&desp=\${hostIP6}\" "  >> "$script_postw"
