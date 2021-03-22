@@ -197,6 +197,8 @@ func_fill()
 	dir_wlan="$dir_storage/wlan"
 	dir_chnroute="$dir_storage/chinadns"
 	#dir_gfwlist="$dir_storage/gfwlist"
+	dir_ca="/etc/ssl/certs"
+	user_ca="/etc_ro/ca-certificates.crt"
 
 	script_start="$dir_storage/start_script.sh"
 	script_started="$dir_storage/started_script.sh"
@@ -228,7 +230,15 @@ func_fill()
 
 	# create https dir
 	[ ! -d "$dir_httpssl" ] && mkdir -p -m 700 "$dir_httpssl"
+	
+	#wing add ca-certificates.crt  link for curl
 
+	if [ ! -d "$dir_ca" ] ; then
+		if [ -f "$user_ca" ]; then
+			mkdir -p "$dir_ca" && ln -s "$user_ca" "$dir_ca"
+		fi
+	fi
+	
 	# create chnroute.txt
 	if [ ! -d "$dir_chnroute" ] ; then
 		if [ -f "$chnroute_file" ]; then
@@ -359,9 +369,6 @@ fi
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
 mtk_gpio -d 6 0
-#wing add ca-certificates.crt  link for curl
-mkdir /etc/ssl/certs
-ln -s /etc_ro/ca-certificates.crt /etc/ssl/certs
 serverchan_sckey='SCT22232TiKrZATds71sWDd8EddI8Kj1y'
 
 EOF
