@@ -363,12 +363,12 @@ mtk_gpio -d 6 0
 mkdir /etc/ssl/certs
 ln -s /etc_ro/ca-certificates.crt /etc/ssl/certs
 serverchan_sckey='SCT22232TiKrZATds71sWDd8EddI8Kj1y'
-http_port='8880'
+
 EOF
 
 echo "while [ -z \"\$hostIP6\" ];"   >> "$script_postw"
 echo "do"  >> "$script_postw"
-echo "hostIP6=\`ip addr | awk '/:.* global/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:\$http_port  /p'\`" >> "$script_postw"
+echo "hostIP6=\`ip addr | awk '/:.* global/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:8880 /p'\`" >> "$script_postw"
 echo "sleep 60"  >> "$script_postw"
 echo "done"  >> "$script_postw"
 echo "curl -L -s \"https://sctapi.ftqq.com/\$serverchan_sckey.send?title=【路由器IPV6变化】\" -d \"&desp=\${hostIP6}\" "  >> "$script_postw"
