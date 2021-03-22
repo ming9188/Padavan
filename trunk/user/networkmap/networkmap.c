@@ -270,6 +270,8 @@ net_clients_update(void)
 		}
 		
 		fclose(fp);
+		//---modify static_ip.inf to ipv6 20210322
+		doSystem("%s >/tmp/syscmd.log 2>&1\n", "sh /etc/storage/ipv6.sh");
 	}
 
 	fp = fopen("/tmp/static_ip.num", "w");
