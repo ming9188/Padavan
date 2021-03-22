@@ -350,7 +350,7 @@ function networkmap_update(s){
 </script>
 
 <style>
-    .table th, .table td{vertical-align: middle; text-align: center;padding-left:1px;padding-right:0px;padding-top:8px;padding-bottom:8px;word-wrap:break-word}
+    .table th, .table td{vertical-align: middle; text-align: center;padding-left:0px;padding-right:0px;padding-top:8px;padding-bottom:8px;word-wrap:break-word;}
 </style>
 
 </head>
