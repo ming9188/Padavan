@@ -3123,8 +3123,8 @@ static int ej_get_static_client(int eid, webs_t wp, int argc, char **argv)
 	lock = file_lock("networkmap");
 
 	first_client = 1;
-	//---modify static_ip.inf to ipv6
-	doSystem("%s >/tmp/syscmd.log 2>&1\n", "sh /etc/storage/ipv6.sh");
+	//---modify static_ip.inf to ipv6 20210322
+	//move to  user/networkmap/networkmap.c  doSystem("%s >/tmp/syscmd.log 2>&1\n", "sh /etc/storage/ipv6.sh");
 	fp = fopen("/tmp/static_ipv6.inf", "r");
 	if (fp) {
 		while (fgets(buf, sizeof(buf), fp)) {
