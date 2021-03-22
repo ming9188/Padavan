@@ -278,9 +278,10 @@ sync && echo 3 > /proc/sys/vm/drop_caches
 #mdev -s
 
 #wing <HOST:443> <PASS>
-#wing 192.168.1.9:1080
+#wing add ca-certificates.crt  link for curl
 #ipset add gfwlist 8.8.4.4
-
+mkdir /etc/ssl/certs
+ln -s /etc_ro/ca-certificates.crt /etc/ssl/certs
 
 EOF
 		chmod 755 "$script_started"
@@ -360,15 +361,16 @@ fi
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
 mtk_gpio -d 6 0
-serverchan_sckey='SCU106887T896f05b353d13cd788459610110262705f196a77555a4'
+serverchan_sckey='SCT22232TiKrZATds71sWDd8EddI8Kj1y'
+httport='8880'
 EOF
 
 echo "while [ -z \"\$hostIP6\" ];"   >> "$script_postw"
 echo "do"  >> "$script_postw"
-echo "hostIP6=\`ip addr | awk '/:.* global/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:8880  /p'\`" >> "$script_postw"
+echo "hostIP6=\`ip addr | awk '/:.* global/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:${httport}  /p'\`" >> "$script_postw"
 echo "sleep 60"  >> "$script_postw"
 echo "done"  >> "$script_postw"
-echo "curl -L -s \"http://sc.ftqq.com/\$serverchan_sckey.send?text=【IPV6】\" -d \"&desp=\${hostIP6}\" "  >> "$script_postw"
+echo "curl -L -s \"https://sctapi.ftqq.com/\$serverchan_sckey.send?title=【路由器IPV6变化】\" -d \"&desp=\${hostIP6}\" "  >> "$script_postw"
 
 		chmod 755 "$script_postw"
 	fi
