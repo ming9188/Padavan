@@ -376,7 +376,7 @@ function networkmap_update(s){
 <input type="hidden" name="macfilter_list_x_0" value="">
 <input type="hidden" name="macfilter_time_x_0" value="00002359">
 <input type="hidden" name="macfilter_date_x_0" value="1111111">
-<select name="MFList_s" id="MFList_s" multiple="true" style="visibility:hidden; width:0px; height:0px;"></select>
+<select name="MFList_s" id="MFList_s" multiple="true" style="visibility:hidden; width:0px; height:0px;word-wrap:break-word;"></select>
 </form>
 
 <div id="unBlockedClients_table"></div>
@@ -389,7 +389,7 @@ function networkmap_update(s){
         <tr>
             <th width="10%"><a href="javascript:sort(0)"><#Type#></a></th>
             <th width="20%"><a href="javascript:sort(1)"><#Computer_Name#></a></th>
-            <th><a href="javascript:sort(2)">IP</a></th>
+            <th><a href="javascript:sort(2)">IP(IPV6)</a></th>
             <th width="24%"><a href="javascript:sort(3)">MAC</a></th>
             <th width="8%" id="col_rssi"><a href="javascript:sort(4)">RSSI</a></th>
             <th width="8%" id="col_block"></th>
@@ -408,7 +408,7 @@ function networkmap_update(s){
         <tr>
             <th width="10%"><#Type#></th>
             <th width="20%"><#Computer_Name#></th>
-            <th>IP</th>
+            <th>IP(IPV6)</th>
             <th width="24%">MAC</th>
             <th width="8%" id="col_unrssi">RSSI</th>
             <th width="8%" id="col_unblock"></th>
