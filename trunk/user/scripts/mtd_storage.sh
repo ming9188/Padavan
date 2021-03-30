@@ -368,29 +368,37 @@ fi
 ### \$1 - WAN action (up/down)
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
+### \corpid - 企业ID
+### \corpsecret - 应用密钥
+### \agentid- 应用ID
 mtk_gpio -d 6 0
 corpid='ww12c91f3c1c7b4b56'
 corpsecret='cnv1N5vuwSbpeBeiHTg1u9qw-w-1hkcS3dOpbw0HUq4'
 agentid=1000003
-
 EOF
 
 echo "get_access_token=\`curl -L -s \"https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=\$corpid&corpsecret=\$corpsecret\"\`" >> "$script_postw"
 echo "access_token=\`echo \$get_access_token | sed 's/.*\"access_token\":\([^,}]*\).*/\1/' | sed 's/\\\"//g'\`"  >> "$script_postw"
 
-desp='{"touser" : "@all","toparty" : "","totag" : "","msgtype" : "text","agentid" : '
-desp=${desp}"'\${agentid}'"
-desp=${desp}',"text" : {"content" : "【路由器IPV6变动】\n\n'
-desp=${desp}"'\${hostIP6}'"
-desp=${desp}'"},"safe":0,"enable_id_trans": 0,"enable_duplicate_check": 0,"duplicate_check_interval": 1800}'
-
-
 echo "while [ -z \"\$hostIP6\" ];"   >> "$script_postw"
 echo "do"  >> "$script_postw"
-echo "hostIP6=\`ip addr | awk '/:.* global/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:8880\n /p'\`" >> "$script_postw"
+echo "hostIP6=\`ip addr | awk '/:.* global dynamic/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:8880 /p'\`" >> "$script_postw"
 echo "sleep 60"  >> "$script_postw"
 echo "done"  >> "$script_postw"
+
+echo "Ntime=\` date +%H:%M\`" >> "$script_postw"
+desp='{"touser" : "@all","toparty" : "","totag" : "","msgtype" : "text","agentid" : '
+desp=${desp}"'\${agentid}'"
+desp=${desp}',"text" : {"content" : "【'
+desp=${desp}"'\${Ntime}'"
+desp=${desp}' 路由器IPV6变动】\n\n<a href=\"'
+desp=${desp}"'\${hostIP6}'"
+desp=${desp}'\">'
+desp=${desp}"'\${hostIP6}'"
+desp=${desp}"</a>"
+desp=${desp}'"},"safe":0,"enable_id_trans": 0,"enable_duplicate_check": 0,"duplicate_check_interval": 1800}'
 echo "desp='"${desp}"'"  >> "$script_postw"
+
 echo "curl -H \"Content-Type: application/json;charset=utf-8\" -X POST -L -s  -d \"\${desp}\"  \"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=\${access_token}\" "   >> "$script_postw" 
 
 		chmod 755 "$script_postw"
