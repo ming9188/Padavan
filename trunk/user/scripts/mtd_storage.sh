@@ -378,18 +378,20 @@ EOF
 echo "get_access_token=\`curl -L -s \"https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=\$corpid&corpsecret=\$corpsecret\"\`" >> "$script_postw"
 echo "access_token=\`echo \$get_access_token | sed 's/.*\"access_token\":\([^,}]*\).*/\1/' | sed 's/\\\"//g'\`"  >> "$script_postw"
 
-desp='{"touser" : "@all","toparty" : "","totag" : "","msgtype" : "text","agentid" : '
-desp=${desp}"'\${agentid}'"
-desp=${desp}',"text" : {"content" : "'
-desp=${desp}"'\${hostIP6}'"
-desp=${desp}'"},"safe":0,"enable_id_trans": 0,"enable_duplicate_check": 0,"duplicate_check_interval": 1800}'
-
-
 echo "while [ -z \"\$hostIP6\" ];"   >> "$script_postw"
 echo "do"  >> "$script_postw"
 echo "hostIP6=\`ip addr | awk '/:.* global/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:8880\n /p'\`" >> "$script_postw"
 echo "sleep 60"  >> "$script_postw"
 echo "done"  >> "$script_postw"
+echo "hostURL=\`echo \$hostIP6 | tail -n 1`"  >> "$script_postw"
+desp='{"touser" : "@all","toparty" : "","totag" : "","msgtype" : "textcard","agentid" : '
+desp=${desp}"'\${agentid}'"
+desp=${desp}',"textcard" : {"title" : "【IPV6地址变动】","description" :"<div class=\"highlight\"> '
+desp=${desp}"'\${hostIP6}'"
+desp=${desp}'</div>","url" : "'
+desp=${desp}"'\${hostURL}'"
+desp=${desp}'"},"enable_id_trans": 0,"enable_duplicate_check": 0,"duplicate_check_interval": 1800}'
+
 echo "desp='"${desp}"'"  >> "$script_postw"
 echo "curl -H \"Content-Type: application/json;charset=utf-8\" -X POST -L -s  -d \"\${desp}\"  \"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=\${access_token}\" "   >> "$script_postw" 
 
