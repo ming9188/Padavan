@@ -341,10 +341,22 @@ EOF
 		chmod 755 "$script_gipv6"
 fi
 
-# create ipv6 script
+# create ipv6 script 20210331 by kkddcclloo
 
 if [ ! -f "$script_ipv6" ] ; then
 		cat > "$script_ipv6" <<EOF
+#!/bin/sh
+### Custom user script
+### showipv6
+#wing resume
+cat /tmp/static_ip.inf | grep -v  "^$" | awk -F "," ' { sh "/etc/storage/getipv6.sh " \$2 |getline result;if ( \$6 == 0 ) print \$1,result ","\$2","\$3","\$4","\$5","\$6} ' > /tmp/static_ipv6.inf
+EOF
+		chmod 755 "$script_ipv6"
+fi
+
+# create post-wan script  20210331 by kkddcclloo
+if [ ! -f "$script_postw" ] ; then
+	cat > "$script_postw" <<EOF
 #!/bin/sh
 
 ### 20210331增加ipv6变动时通过企业微信推送
@@ -365,19 +377,20 @@ EOF
 
 echo "get_access_token=\`curl -L -s \"https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=\$corpid&corpsecret=\$corpsecret\"\`" >> "$script_postw"
 echo "access_token=\`echo \$get_access_token | sed 's/.*\"access_token\":\([^,}]*\).*/\1/' | sed 's/\\\"//g'\`"  >> "$script_postw"
-
+echo "Ntime=\`date +%H:%M\`" >> "$script_postw"
+echo "Rname=\`nvram get computer_name\`" >> "$script_postw"
 echo "while [ -z \"\$hostIP\" ];"   >> "$script_postw"
 echo "do"  >> "$script_postw"
 echo "hostIP=\`ip addr | awk '/:.* global dynamic/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]/p'\`" >> "$script_postw"
 echo "sleep 60"  >> "$script_postw"
 echo "done"  >> "$script_postw"
 echo "hostIP6=\${hostIP}:\${hostport}"  >> "$script_postw"
-echo "Ntime=\` date +%H:%M\`" >> "$script_postw"
+
 desp='{"touser" : "@all","toparty" : "","totag" : "","msgtype" : "text","agentid" : '
 desp=${desp}"'\${agentid}'"
 desp=${desp}',"text" : {"content" : "【'
-desp=${desp}"'\${Ntime}'"
-desp=${desp}' 路由器IPV6变动】\n\n<a href=\"'
+desp=${desp}"'\${Ntime} \${Rname}'"
+desp=${desp}'路由器IPV6变动】\n\n<a href=\"'
 desp=${desp}"'\${hostIP6}'"
 desp=${desp}'\">'
 desp=${desp}"'\${hostIP6}'"
