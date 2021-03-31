@@ -341,11 +341,12 @@ EOF
 		chmod 755 "$script_gipv6"
 fi
 
-# create ipv6 script 20210331 by kkddcclloo
+# create ipv6 script
 
 if [ ! -f "$script_ipv6" ] ; then
 		cat > "$script_ipv6" <<EOF
 #!/bin/sh
+
 ### Custom user script
 ### showipv6
 #wing resume
@@ -353,6 +354,7 @@ cat /tmp/static_ip.inf | grep -v  "^$" | awk -F "," ' { sh "/etc/storage/getipv6
 EOF
 		chmod 755 "$script_ipv6"
 fi
+
 
 # create post-wan script  20210331 by kkddcclloo
 if [ ! -f "$script_postw" ] ; then
