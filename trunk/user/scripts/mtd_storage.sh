@@ -231,7 +231,7 @@ func_fill()
 	# create https dir
 	[ ! -d "$dir_httpssl" ] && mkdir -p -m 700 "$dir_httpssl"
 	
-	#wing add ca-certificates.crt  link for curl
+	#add ca-certificates.crt  link for curl 20210331 kkddcclloo
 
 	if [ ! -d "$dir_ca" ] ; then
 		if [ -f "$user_ca" ]; then
@@ -316,7 +316,7 @@ EOF
 
 ### Custom user script
 ### Called after internal iptables reconfig (firewall update)
-
+### ipv6防火墙规则 3389远程桌面 其它端口按下方规则添加 20210331 by kkddcclloo
 #wing resume
 ip6tables -I FORWARD -p tcp --dport 3389 -j ACCEPT
 ip6tables -I FORWARD -p tcp --dport 8829 -j ACCEPT
@@ -325,7 +325,7 @@ EOF
 		chmod 755 "$script_postf"
 	fi
 
-# create gipv6 script
+# create gipv6 script 20210331 by kkddcclloo
 
 if [ ! -f "$script_gipv6" ] ; then
 		cat > "$script_gipv6" <<EOF
@@ -347,45 +347,31 @@ if [ ! -f "$script_ipv6" ] ; then
 		cat > "$script_ipv6" <<EOF
 #!/bin/sh
 
-### Custom user script
-### showipv6
-#wing resume
-cat /tmp/static_ip.inf | grep -v  "^$" | awk -F "," ' { sh "/etc/storage/getipv6.sh " \$2 |getline result;if ( \$6 == 0 ) print \$1,result ","\$2","\$3","\$4","\$5","\$6} ' > /tmp/static_ipv6.inf
-
-EOF
-		chmod 755 "$script_ipv6"
-fi
-
-
-
-	# create post-wan script
-	if [ ! -f "$script_postw" ] ; then
-		cat > "$script_postw" <<EOF
-#!/bin/sh
-
-### Custom user script
+### 20210331增加ipv6变动时通过企业微信推送
 ### Called after internal WAN up/down action
 ### \$1 - WAN action (up/down)
 ### \$2 - WAN interface name (e.g. eth3 or ppp0)
 ### \$3 - WAN IPv4 address
-### \corpid - 企业ID
-### \corpsecret - 应用密钥
-### \agentid- 应用ID
+### \corpid - 企业微信ID 申请页面https://work.weixin.qq.com/
+### \corpsecret - 企业微信应用密钥
+### \agentid- 企业微信应用ID
+### \hostport- 路由器远程http端口
 mtk_gpio -d 6 0
 corpid='ww12c91f3c1c7b4b56'
 corpsecret='cnv1N5vuwSbpeBeiHTg1u9qw-w-1hkcS3dOpbw0HUq4'
 agentid=1000003
+hostport=8880
 EOF
 
 echo "get_access_token=\`curl -L -s \"https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=\$corpid&corpsecret=\$corpsecret\"\`" >> "$script_postw"
 echo "access_token=\`echo \$get_access_token | sed 's/.*\"access_token\":\([^,}]*\).*/\1/' | sed 's/\\\"//g'\`"  >> "$script_postw"
 
-echo "while [ -z \"\$hostIP6\" ];"   >> "$script_postw"
+echo "while [ -z \"\$hostIP\" ];"   >> "$script_postw"
 echo "do"  >> "$script_postw"
-echo "hostIP6=\`ip addr | awk '/:.* global dynamic/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:8880 /p'\`" >> "$script_postw"
+echo "hostIP=\`ip addr | awk '/:.* global dynamic/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]/p'\`" >> "$script_postw"
 echo "sleep 60"  >> "$script_postw"
 echo "done"  >> "$script_postw"
-
+echo "hostIP6=\${hostIP}:\${hostport}"  >> "$script_postw"
 echo "Ntime=\` date +%H:%M\`" >> "$script_postw"
 desp='{"touser" : "@all","toparty" : "","totag" : "","msgtype" : "text","agentid" : '
 desp=${desp}"'\${agentid}'"
@@ -402,7 +388,7 @@ echo "desp='"${desp}"'"  >> "$script_postw"
 echo "curl -H \"Content-Type: application/json;charset=utf-8\" -X POST -L -s  -d \"\${desp}\"  \"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=\${access_token}\" "   >> "$script_postw" 
 
 		chmod 755 "$script_postw"
-	fi
+fi
 
 	# create inet-state script
 	if [ ! -f "$script_inets" ] ; then
