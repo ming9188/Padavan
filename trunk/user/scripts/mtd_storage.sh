@@ -391,8 +391,8 @@ echo "hostIP6=\${hostIP}:\${hostport}"  >> "$script_postw"
 desp='{"touser" : "@all","toparty" : "","totag" : "","msgtype" : "text","agentid" : '
 desp=${desp}"'\${agentid}'"
 desp=${desp}',"text" : {"content" : "【'
-desp=${desp}"'\${Ntime} \${Rname}'"
-desp=${desp}'路由器IPV6变动】\n\n<a href=\"'
+desp=${desp}"'\${Ntime}' '\${Rname}'"
+desp=${desp}' IPV6变动】\n\n<a href=\"'
 desp=${desp}"'\${hostIP6}'"
 desp=${desp}'\">'
 desp=${desp}"'\${hostIP6}'"
