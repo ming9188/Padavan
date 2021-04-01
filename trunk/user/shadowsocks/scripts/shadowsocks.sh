@@ -32,6 +32,7 @@ ss_turn=`nvram get ss_turn`
 lan_con=`nvram get lan_con`
 GLOBAL_SERVER=`nvram get global_server`
 socks=""
+opt_src="https://opt.cn2qq.com/opt-file/"
 
 find_bin() {
 	case "$1" in
@@ -44,7 +45,29 @@ find_bin() {
 	trojan) ret="/usr/bin/trojan" ;;
 	socks5) ret="/usr/bin/ipt2socks" ;;
 	esac
+	local bin=$(ret)
+	if [ ! -f "$bin" ]; then
+		ret=$(get_bin_tmp $1)
+	fi
+	
 	echo $ret
+}
+
+get_bin_tmp() {
+	case "$1" in
+	ss) ret="ss-redir" ;;
+	ss-local) ret="ss-local" ;;
+	ssr) ret="ssr-redir" ;;
+	ssr-local) ret="ssr-local" ;;
+	ssr-server) ret="ssr-server" ;;
+	v2ray) ret="v2ray" ;;
+	trojan) ret="trojan" ;;
+	socks5) ret="ipt2socks" ;;
+	esac
+	mkdir "/tmp/bin"
+	wget -P "/tmp/bin/" $opt_src$ret 
+	chmod 755 -R "/tmp/bin/"
+	echo "/tmp/bin/"$ret
 }
 
 gen_config_file() {
@@ -67,22 +90,6 @@ local type=$stype
 		;;
 	trojan)
 		tj_bin="/usr/bin/trojan"
-		if [ ! -f "$tj_bin" ]; then
-			if [ ! -f "/tmp/trojan" ];then
-				curl -k -s -o /tmp/trojan --connect-timeout 10 --retry 3 https://raw.githubusercontent.com/kkddcclloo/rt-n56u/master/trunk/user/trojan/trojan
-				if [ ! -f "/tmp/trojan" ]; then
-					logger -t "SS" "trojan二进制文件下载失败，可能是地址失效或者网络异常！"
-					nvram set ss_enable=0
-					ssp_close
-				else
-					logger -t "SS" "trojan二进制文件下载成功"
-					chmod -R 777 /tmp/trojan
-					tj_bin="/tmp/trojan"
-				fi
-			else
-				tj_bin="/tmp/trojan"
-			fi		
-		fi
 		if [ "$2" = "0" ]; then
 		lua /etc_ro/ss/gentrojanconfig.lua $1 nat 1080 >$trojan_json_file
 		sed -i 's/\\//g' $trojan_json_file
@@ -93,22 +100,6 @@ local type=$stype
 		;;
 	v2ray)
 		v2_bin="/usr/bin/v2ray"
-		if [ ! -f "$v2_bin" ]; then
-			if [ ! -f "/tmp/v2ray" ];then
-				curl -k -s -o /tmp/v2ray --connect-timeout 10 --retry 3 https://raw.githubusercontent.com/kkddcclloo/rt-n56u/master/trunk/user/v2ray/v2ray
-				if [ ! -f "/tmp/v2ray" ]; then
-					logger -t "SS" "v2ray二进制文件下载失败，可能是地址失效或者网络异常！"
-					nvram set ss_enable=0
-					ssp_close
-				else
-					logger -t "SS" "v2ray二进制文件下载成功"
-					chmod -R 777 /tmp/v2ray
-					v2_bin="/tmp/v2ray"
-				fi
-			else
-				v2_bin="/tmp/v2ray"
-			fi
-		fi
 		v2ray_enable=1
 		if [ "$2" = "1" ]; then
 		lua /etc_ro/ss/genv2config.lua $1 udp 1080 >/tmp/v2-ssr-reudp.json
