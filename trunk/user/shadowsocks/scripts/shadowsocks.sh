@@ -69,7 +69,7 @@ local type=$stype
 		tj_bin="/usr/bin/trojan"
 		if [ ! -f "$tj_bin" ]; then
 			if [ ! -f "/tmp/trojan" ];then
-				curl -k -s -o /tmp/trojan --connect-timeout 10 --retry 3 https://github.com/kkddcclloo/rt-n56u/tree/master/trunk/user/trojan/trojan
+				curl -k -s -o /tmp/trojan --connect-timeout 10 --retry 3 https://github.com/kkddcclloo/rt-n56u/raw/master/trunk/user/trojan/trojan
 				if [ ! -f "/tmp/trojan" ]; then
 					logger -t "SS" "trojan二进制文件下载失败，可能是地址失效或者网络异常！"
 					nvram set ss_enable=0
@@ -95,7 +95,7 @@ local type=$stype
 		v2_bin="/usr/bin/v2ray"
 		if [ ! -f "$v2_bin" ]; then
 			if [ ! -f "/tmp/v2ray" ];then
-				curl -k -s -o /tmp/v2ray --connect-timeout 10 --retry 3 https://github.com/kkddcclloo/rt-n56u/tree/master/trunk/user/v2ray/v2ray
+				curl -k -s -o /tmp/v2ray --connect-timeout 10 --retry 3 https://github.com/kkddcclloo/rt-n56u/raw/master/trunk/user/v2ray/v2ray
 				if [ ! -f "/tmp/v2ray" ]; then
 					logger -t "SS" "v2ray二进制文件下载失败，可能是地址失效或者网络异常！"
 					nvram set ss_enable=0
