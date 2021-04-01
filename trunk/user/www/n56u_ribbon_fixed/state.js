@@ -5,6 +5,7 @@ var lan_proto = '<% nvram_get_x("", "lan_proto_x"); %>';
 var log_float = '<% nvram_get_x("", "log_float_ui"); %>';
 var reboot_schedule_support = '<% nvram_get_x("", "reboot_schedule_enable"); %>';
 var ss_schedule_support = '<% nvram_get_x("", "ss_schedule_enable"); %>';
+var computer_name = '<% nvram_get_x("", "computer_name"); %>';
 var log_stamp = 0;
 var sysinfo = <% json_system_status(); %>;
 var uptimeStr = "<% uptime(); %>";
@@ -738,7 +739,8 @@ function show_footer(){
 	footer_code +='<div align="center">\n';
 	//footer_code +='  <span>Highcharts by Torstein Hønsi & <a href="http://www.highcharts.com">Highsoft</a></span></br>\n';
 	//footer_code +='  <span>Big icons designed by <a href="http://www.freepik.com">Freepik</a></br></span>\n';
-	footer_code +='  <span>Padavan For <% nvram_get_x("",  "computer_name); %></span></br>\n';
+	footer_code +='  <span>Padavan For ' +computer_name+ '</span></br>\n';
+	footer_code +='  <span>Non-Commercial Use Only</span>\n';
 	footer_code +='</div>\n';
 
 	$("footer").innerHTML = footer_code;
