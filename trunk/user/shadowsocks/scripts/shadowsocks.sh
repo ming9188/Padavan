@@ -32,6 +32,7 @@ ss_turn=`nvram get ss_turn`
 lan_con=`nvram get lan_con`
 GLOBAL_SERVER=`nvram get global_server`
 socks=""
+opt_src="https://opt.cn2qq.com/opt-file/"
 
 find_bin() {
 	case "$1" in
@@ -44,7 +45,29 @@ find_bin() {
 	trojan) ret="/usr/bin/trojan" ;;
 	socks5) ret="/usr/bin/ipt2socks" ;;
 	esac
+	local bin=$ret
+	if [ ! -f "$bin" ]; then
+		ret=$(get_bin_tmp $1)
+	fi
+	
 	echo $ret
+}
+
+get_bin_tmp() {
+	case "$1" in
+	ss) ret="ss-redir" ;;
+	ss-local) ret="ss-local" ;;
+	ssr) ret="ssr-redir" ;;
+	ssr-local) ret="ssr-local" ;;
+	ssr-server) ret="ssr-server" ;;
+	v2ray) ret="v2ray" ;;
+	trojan) ret="trojan" ;;
+	socks5) ret="ipt2socks" ;;
+	esac
+	mkdir "/tmp/bin"
+	wget -P "/tmp/bin/" $opt_src$ret 
+	chmod 755 -R "/tmp/bin/"
+	echo "/tmp/bin/"$ret
 }
 
 gen_config_file() {
