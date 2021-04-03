@@ -11,7 +11,7 @@ LDFLAGS := -Wl,--gc-sections
 
 all: download_src extract_test config_test
 	$(MAKE) -C $(SRC_DIR)/build
-	
+	upx --lzma --best $(THISDIR)/$(SRC_DIR)/build/trojan
 download_src:
 	( if [ ! -f $(THISDIR)/$(SRC_DIR).tar.gz ]; then \
 	curl --create-dirs -L $(SRC_URL) -o $(THISDIR)/$(SRC_DIR).tar.gz ; \
@@ -54,6 +54,5 @@ clean:
 	fi ; \
 
 romfs:
-	upx --lzma --best $(THISDIR)/$(SRC_DIR)/build/trojan
 	$(ROMFSINST) -p +x $(THISDIR)/$(SRC_DIR)/build/trojan /usr/bin/trojan
 	cp -fP $(CONFIG_CROSS_COMPILER_ROOT)/mipsel-linux-uclibc/sysroot/lib/libstdc++.so* $(ROMFSDIR)/lib
