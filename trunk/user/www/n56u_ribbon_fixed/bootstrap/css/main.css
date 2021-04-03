@@ -15,10 +15,15 @@ body.body_iframe{
 }
 
 #logo {
-    background-image: url("/bootstrap/img/asus_logo.png");
+    background: url("/bootstrap/img/asus_logo.png") no-repeat center;
     width: 150px;
     height: 71px;
-    margin-top: 40px;
+    padding-top: 40px;
+    display: table-cell;
+    font-size: 20px;
+    color: #09d;
+    opacity: 1;
+    vertical-align: bottom;
 }
 #logo:hover {
     cursor: pointer;
