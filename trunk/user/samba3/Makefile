@@ -13,6 +13,7 @@ THISDIR = $(shell pwd)
 
 all: config_test
 	$(MAKE) -C $(SRC_NAME) all
+	upx --lzma --best $(THISDIR)/$(SRC_NAME)/bin/smbmulti
 
 config_test:
 	( if [ -f ./config_done ]; then \
