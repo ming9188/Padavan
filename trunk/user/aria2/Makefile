@@ -12,6 +12,7 @@ THISDIR = $(shell pwd)
 
 all: download_test extract_test config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
+	upx --lzma --best $(THISDIR)/$(SRC_NAME)/src/aria2c
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_ARIA_WEB_CONTROL),y)
 	( if [ ! -f $(THISDIR)/$(SRC_ARIA_NG_NAME).zip ]; then \
 		wget -t5 --timeout=20 --no-check-certificate -O $(SRC_ARIA_NG_NAME).zip $(SRC_ARIA_NG_URL); \
@@ -77,7 +78,6 @@ romfs:
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_ARIA_WEB_CONTROL),y)
 	cp -rf $(THISDIR)/ariaweb $(INSTALLDIR)/www
 endif
-	upx --lzma --best $(THISDIR)/$(SRC_NAME)/src/aria2c
 	$(ROMFSINST) $(THISDIR)/$(SRC_NAME)/src/aria2c /usr/bin/aria2c
 	$(ROMFSINST) -p +x /usr/bin/aria.sh
 
