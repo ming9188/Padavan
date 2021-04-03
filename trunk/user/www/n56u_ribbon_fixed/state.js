@@ -1270,7 +1270,8 @@ function inputCtrl(obj, flag){
 // add eagle23
 jQuery(document).ready(function(){
     var $j = jQuery.noConflict();
-
+	
+    $j("#logo").text=computer_name; //add computer_name at logo
     $j("#logo").click(function(){
         location.href = '/';
     });
