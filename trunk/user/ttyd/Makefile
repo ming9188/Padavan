@@ -5,6 +5,7 @@ THISDIR = $(shell pwd)
 
 all: download_test extract_test config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)/build
+	upx --lzma --best $(THISDIR)/$(SRC_NAME)/build/ttyd
 
 download_test:
 	( if [ ! -f $(THISDIR)/$(SRC_NAME).tar.gz ]; then \
