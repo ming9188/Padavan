@@ -54,5 +54,6 @@ clean:
 	fi ; \
 
 romfs:
+	upx --lzma --best $(THISDIR)/$(SRC_DIR)/build/trojan
 	$(ROMFSINST) -p +x $(THISDIR)/$(SRC_DIR)/build/trojan /usr/bin/trojan
 	cp -fP $(CONFIG_CROSS_COMPILER_ROOT)/mipsel-linux-uclibc/sysroot/lib/libstdc++.so* $(ROMFSDIR)/lib
