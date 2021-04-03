@@ -1271,7 +1271,7 @@ function inputCtrl(obj, flag){
 jQuery(document).ready(function(){
     var $j = jQuery.noConflict();
 	
-    $j("#logo").text=computer_name; //add computer_name at logo
+    $j("#logo").text(computer_name); //add computer_name at logo
     $j("#logo").click(function(){
         location.href = '/';
     });
