@@ -32,6 +32,7 @@ build_v2ray:
 			'$(V2RAY_SED_ARGS)' \
 			distro/all/all.go ; \
 	GOOS=linux GOARCH=mipsle go build -ldflags "-w -s" -o $(THISDIR)/bin/v2ray; \
+	/bin/upx --lzma --best $(THISDIR)/bin/v2ray; \
 	)
 
 clean:
