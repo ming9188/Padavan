@@ -378,7 +378,7 @@ agentid=1000003
 hostport=8880
 puship=1
 EOF
-echo "if [\"\$puship\" -eq 1 ]; then" >> "$script_postw"
+echo "if [ \"\$puship\" -eq 1 ]; then" >> "$script_postw"
 echo "get_access_token=\`curl -L -s \"https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=\$corpid&corpsecret=\$corpsecret\"\`" >> "$script_postw"
 echo "access_token=\`echo \$get_access_token | sed 's/.*\"access_token\":\([^,}]*\).*/\1/' | sed 's/\\\"//g'\`"  >> "$script_postw"
 echo "Ntime=\`date +%H:%M\`" >> "$script_postw"
