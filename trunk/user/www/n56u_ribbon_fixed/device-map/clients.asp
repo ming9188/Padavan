@@ -18,7 +18,7 @@
 <script>
 var $j = jQuery.noConflict();
 
-var ipmonitor = [<% get_static_client(); %>];
+var ipmonitor = [<% get_static_client_ipv6(); %>];
 var wireless = {<% wl_auth_list(); %>};
 
 var list_type = '<% nvram_get_x("", "macfilter_enable_x"); %>';
