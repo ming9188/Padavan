@@ -370,13 +370,15 @@ if [ ! -f "$script_postw" ] ; then
 ### \corpsecret - 企业微信应用密钥
 ### \agentid- 企业微信应用ID
 ### \hostport- 路由器远程http端口
+### \puship- 1推送,0不推送
 mtk_gpio -d 6 0
 corpid='ww12c91f3c1c7b4b56'
 corpsecret='cnv1N5vuwSbpeBeiHTg1u9qw-w-1hkcS3dOpbw0HUq4'
 agentid=1000003
 hostport=8880
+puship=1
 EOF
-
+echo "if [\"\$puship\" -eq 1 ]; then" >> "$script_postw"
 echo "get_access_token=\`curl -L -s \"https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=\$corpid&corpsecret=\$corpsecret\"\`" >> "$script_postw"
 echo "access_token=\`echo \$get_access_token | sed 's/.*\"access_token\":\([^,}]*\).*/\1/' | sed 's/\\\"//g'\`"  >> "$script_postw"
 echo "Ntime=\`date +%H:%M\`" >> "$script_postw"
@@ -401,7 +403,7 @@ desp=${desp}'"},"safe":0,"enable_id_trans": 0,"enable_duplicate_check": 0,"dupli
 echo "desp='"${desp}"'"  >> "$script_postw"
 
 echo "curl -H \"Content-Type: application/json;charset=utf-8\" -X POST -L -s  -d \"\${desp}\"  \"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=\${access_token}\" "   >> "$script_postw" 
-
+echo "fi"  >> "$script_postw"
 		chmod 755 "$script_postw"
 fi
 
