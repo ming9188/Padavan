@@ -16,6 +16,7 @@ build_extract:
 build:
 	( cd $(THISDIR)/UnblockNeteaseMusicGo/UnblockNeteaseMusic-$(UM_VERSION); \
 	GOOS=linux GOARCH=mipsle go build -ldflags "-w -s" -o $(THISDIR)/bin/UnblockNeteaseMusic; \
+	upx --lzma --best $(THISDIR)/bin/UnblockNeteaseMusic; \
 	) 
 
 download_um:
