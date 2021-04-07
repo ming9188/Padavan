@@ -308,7 +308,7 @@ EOF
 		chmod 755 "$script_shutd"
 	fi
 
-	# create post-iptables script
+	# create post-iptables script 20210331 by kkddcclloo
 
 	if [ ! -f "$script_postf" ] ; then
 		cat > "$script_postf" <<EOF
@@ -316,7 +316,7 @@ EOF
 
 ### Custom user script
 ### Called after internal iptables reconfig (firewall update)
-### ipv6防火墙规则 3389远程桌面 其它端口按下方规则添加 20210331 by kkddcclloo
+### ipv6防火墙规则 3389远程桌面 其它端口按下方规则添加 
 #wing resume
 ip6tables -I FORWARD -p tcp --dport 3389 -j ACCEPT
 ip6tables -I FORWARD -p tcp --dport 8829 -j ACCEPT
@@ -341,7 +341,8 @@ EOF
 		chmod 755 "$script_gipv6"
 fi
 
-# create ipv6 script
+# create ipv6 script 20210331 by kkddcclloo
+
 
 if [ ! -f "$script_ipv6" ] ; then
 		cat > "$script_ipv6" <<EOF
@@ -356,7 +357,7 @@ EOF
 fi
 
 
-# create post-wan script  20210331 by kkddcclloo
+# create post-wan script  20210407 by kkddcclloo
 
 if [ ! -f "$script_postw" ] ; then
 	cat > "$script_postw" <<EOF
@@ -387,9 +388,10 @@ echo "Rname=\`nvram get computer_name\`" >> "$script_postw"
 echo "i=0" >> "$script_postw"
 echo "while [ -z \"\$hostIP6\" ];"   >> "$script_postw"
 echo "do"  >> "$script_postw"
+echo "sleep 60"  >> "$script_postw"
 echo "let i++" >> "$script_postw"
 echo "hostIP6=\`ip addr | awk '/:.* global/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:'\${hostport}'\n /p'\`" >> "$script_postw"
-echo "sleep 60"  >> "$script_postw"
+
 echo "if [ \"\$i\" -eq 5 ];then" >> "$script_postw"
 echo "hostIP6='上网'\${i}'分钟，未得到ipv6!'" >> "$script_postw"
 echo "break" >> "$script_postw"
