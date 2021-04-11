@@ -33,8 +33,8 @@ jobs:
         pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget
     - name: Clone source code
       run: |
-        git clone --depth=1 https://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@github.com/kkddcclloo/Padavan.git /opt/rt-n56u
-        cd /opt/rt-n56u/toolchain-mipsel
+       # git clone --depth=1 https://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@github.com/kkddcclloo/Padavan.git /opt/rt-n56u
+        cd toolchain-mipsel
         sh dl_toolchain.sh
         mkdir -p /opt/images/
     #modiy go language
@@ -47,7 +47,7 @@ jobs:
       env:
         TNAME: R2100
       run: |
-        cd /opt/rt-n56u/trunk
+        cd trunk
         if [ ! -f configs/templates/$TNAME.config ] ; then
         echo "configs/templates/$TNAME.config not found "
         exit 1
