@@ -388,12 +388,12 @@ function networkmap_update(s){
             <th colspan="5" style="text-align: center;"><#ConnectedClient#></th>
         </tr>
         <tr>
-            <th width="18%"><a href="javascript:sort(0)"><#Type#></a></th>
+            <th width="8%"><a href="javascript:sort(0)"><#Type#></a></th>
             <th width="18%"><a href="javascript:sort(1)"><#Computer_Name#></a></th>
             <th><a href="javascript:sort(2)">IP(IPV6)</a></th>
             <th width="22%"><a href="javascript:sort(3)">MAC</a></th>
             <th width="8%" id="col_rssi"><a href="javascript:sort(4)">RSSI</a></th>
-            <th width="18%" id="col_block"></th>
+            <th width="8%" id="col_block"></th>
         </tr>
     </thead>
     <tbody>
@@ -407,12 +407,12 @@ function networkmap_update(s){
             <th colspan="5" style="text-align: center;"><#BlockedClient#></th>
         </tr>
         <tr>
-            <th width="18%"><#Type#></th>
+            <th width="8%"><#Type#></th>
             <th width="18%"><#Computer_Name#></th>
             <th>IP(IPV6)</th>
             <th width="22%">MAC</th>
             <th width="8%" id="col_unrssi">RSSI</th>
-            <th width="18%" id="col_unblock"></th>
+            <th width="8%" id="col_unblock"></th>
         </tr>
     </thead>
     <tbody>
