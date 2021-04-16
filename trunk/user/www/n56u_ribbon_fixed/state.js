@@ -422,7 +422,7 @@ if (found_app_adguardhome()){
 }
 }
 if (found_app_aliddns()){
-	tabtitle[16] = new Array("", "<#menu5_30#>");
+	tabtitle[16] = new Array("", "<#menu5_29#>");
 }else{
 if (found_app_zerotier()){
 	tabtitle[16] = new Array("", "<#menu5_32#>");
