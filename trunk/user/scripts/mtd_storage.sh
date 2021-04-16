@@ -404,7 +404,7 @@ echo "do"  >> "$script_postw"
 echo "sleep 60"  >> "$script_postw"
 echo "let i++" >> "$script_postw"
 echo "hostIP6=\`ip addr | awk '/:.* global/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:'\${hostport}'\n /p'\`" >> "$script_postw"
-echo "if [ \"\$i\" -eq 5 ];then" >> "$script_postw"
+echo "if [ \"\$i\" -eq 10 ];then" >> "$script_postw"
 echo "hostIP6='上网'\${i}'分钟，未得到ipv6!'" >> "$script_postw"
 echo "break" >> "$script_postw"
 echo "fi" >> "$script_postw"
@@ -420,7 +420,7 @@ desp=${desp}'"},"safe":0,"enable_id_trans": 0,"enable_duplicate_check": 0,"dupli
 echo "desp='"${desp}"'"  >> "$script_postw"
 
 echo "curl -H \"Content-Type: application/json;charset=utf-8\" -X POST -L -s  -d \"\${desp}\"  \"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=\${access_token}\" "   >> "$script_postw" 
-echo "logger -t '微信推送' ' \$hostIP6'"
+echo "logger -t '微信推送' ' \$hostIP6'"  >> "$script_postw"
 echo "fi"  >> "$script_postw"
 		chmod 755 "$script_postw"
 
