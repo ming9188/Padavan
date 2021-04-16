@@ -316,8 +316,16 @@ EOF
 
 ### Custom user script
 ### Called after internal iptables reconfig (firewall update)
-### ipv6防火墙规则 3389远程桌面 其它端口按下方规则添加 
+
 #wing resume
+### ipv6防火墙全关规则 以下把#去掉则关闭ip6防火墙 
+#ip6tables -F
+#ip6tables -X
+#ip6tables -P INPUT ACCEPT
+#ip6tables -P OUTPUT ACCEPT
+#ip6tables -P FORWARD ACCEPT
+
+### ipv6防火墙单独规则 3389远程桌面 其它端口按下方规则添加 
 ip6tables -I FORWARD -p tcp --dport 3389 -j ACCEPT
 ip6tables -I FORWARD -p tcp --dport 8829 -j ACCEPT
 
