@@ -381,22 +381,33 @@ hostport=8880
 puship=1
 EOF
 echo "if [ \"\$puship\" -eq 1 ]; then" >> "$script_postw"
+
+echo "i=0" >> "$script_postw"
+echo "while [ -z \"\$access_token\" ];"   >> "$script_postw"
+echo "do"  >> "$script_postw"
+echo "sleep 60"  >> "$script_postw"
+echo "let i++" >> "$script_postw"
 echo "get_access_token=\`curl -L -s \"https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=\$corpid&corpsecret=\$corpsecret\"\`" >> "$script_postw"
 echo "access_token=\`echo \$get_access_token | sed 's/.*\"access_token\":\([^,}]*\).*/\1/' | sed 's/\\\"//g'\`"  >> "$script_postw"
+echo "if [ \"\$i\" -eq 5 ];then" >> "$script_postw"
+echo "hostIP6='上网'\${i}'分钟，未得到access_token!'" >> "$script_postw"
+echo "break" >> "$script_postw"
+echo "fi" >> "$script_postw"
+echo "done"  >> "$script_postw"
+
 echo "Ntime=\`date +%H:%M\`" >> "$script_postw"
 echo "Rname=\`nvram get computer_name\`" >> "$script_postw"
+
 echo "i=0" >> "$script_postw"
 echo "while [ -z \"\$hostIP6\" ];"   >> "$script_postw"
 echo "do"  >> "$script_postw"
 echo "sleep 60"  >> "$script_postw"
 echo "let i++" >> "$script_postw"
 echo "hostIP6=\`ip addr | awk '/:.* global/{print \$2}'  | awk -F/ '{print \$1}' | sed -n 's/^.*/http:\/\/[&]:'\${hostport}'\n /p'\`" >> "$script_postw"
-
 echo "if [ \"\$i\" -eq 5 ];then" >> "$script_postw"
 echo "hostIP6='上网'\${i}'分钟，未得到ipv6!'" >> "$script_postw"
 echo "break" >> "$script_postw"
 echo "fi" >> "$script_postw"
-
 echo "done"  >> "$script_postw"
 
 desp='{"touser" : "@all","toparty" : "","totag" : "","msgtype" : "text","agentid" : '
@@ -409,6 +420,7 @@ desp=${desp}'"},"safe":0,"enable_id_trans": 0,"enable_duplicate_check": 0,"dupli
 echo "desp='"${desp}"'"  >> "$script_postw"
 
 echo "curl -H \"Content-Type: application/json;charset=utf-8\" -X POST -L -s  -d \"\${desp}\"  \"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=\${access_token}\" "   >> "$script_postw" 
+echo "logger -t '微信推送' ' \$hostIP6'"
 echo "fi"  >> "$script_postw"
 		chmod 755 "$script_postw"
 
