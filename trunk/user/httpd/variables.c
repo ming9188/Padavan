@@ -1197,7 +1197,9 @@
 			{"w_men", "", NULL, FALSE},
 			{"w_adbyby", "", NULL, FALSE},
 			{"w_pdnsd", "", NULL, FALSE},
-
+			{"w_aliddns", "", NULL, FALSE},
+			{"w_caddy", "", NULL, FALSE},
+			{"w_wyy", "", NULL, FALSE},
 	};
 	struct variable variables_WLANConfig11b[] = {
 			{"rt_ssid", "", NULL, EVM_RESTART_WIFI2},
