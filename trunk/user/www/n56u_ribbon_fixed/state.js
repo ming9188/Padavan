@@ -1471,7 +1471,10 @@ var w_dnsf = '<% nvram_get_x("", "w_dnsf"); %>';
 var w_ss = '<% nvram_get_x("", "w_ss"); %>';
 var w_men = '<% nvram_get_x("", "w_men"); %>';
 var w_adbyby = '<% nvram_get_x("", "w_adbyby"); %>';
-
+var w_pdnsd = '<% nvram_get_x("", "w_pdnsd"); %>';
+var w_aliddns = '<% nvram_get_x("", "w_aliddns"); %>';
+var w_caddy = '<% nvram_get_x("", "w_caddy"); %>';
+var w_wyy = '<% nvram_get_x("", "w_wyy"); %>';
 if (w_ai==0){
 	menuL1_link[2] = "";
 	menuL1_title[2] = "";
@@ -1523,6 +1526,22 @@ if (w_men==0){
 if (w_adbyby==0){
 	menuL2_link[15] = "";
 	menuL2_title[15] = "";
+}
+if (w_pdnsd==0){
+	menuL2_link[16] = "";
+	menuL2_title[16] = "";
+}
+if (w_aliddns==0){
+	menuL2_link[17] = "";
+	menuL2_title[17] = "";
+}
+if (w_caddy==0){
+	menuL2_link[19] = "";
+	menuL2_title[19] = "";
+}
+if (w_wyy==0){
+	menuL2_link[20] = "";
+	menuL2_title[20] = "";
 }
 (function($){
     var $j = $.noConflict();
