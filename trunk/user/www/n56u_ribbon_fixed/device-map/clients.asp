@@ -27,7 +27,7 @@ var m_dhcp = [<% get_nvram_list("LANHostConfig", "ManualDHCPList"); %>];
 
 var nmap_fullscan = '<% nvram_get_x("", "networkmap_fullscan"); %>';
 
-var DEVICE_TYPE = ["", "<#Device_type_01_PC#>", "<#Device_type_02_RT#>", "<#Device_type_03_AP#>", "<#Device_type_04_NAS#>", "<#Device_type_05_IC#>", "<#Device_type_06_OD#>"];
+var DEVICE_TYPE = ["", "<#Device_type_01_PC#>", "<#Device_type_02_RT#>", "<#Device_type_03_AP#>", "<#Device_type_04_NA#>", "<#Device_type_05_IC#>", "<#Device_type_06_OD#>", "<#Device_type_07_PR#>", "<#Device_type_08_XB#>"];
 
 var clients = getclients(1,0);
 var unblocked_clients = new Array();
