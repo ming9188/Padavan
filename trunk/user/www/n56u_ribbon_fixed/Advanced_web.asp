@@ -39,7 +39,9 @@ $j(document).ready(function() {
 	init_itoggle('w_men');
 	init_itoggle('w_adbyby');
 	init_itoggle('w_pdnsd');
-
+	init_itoggle('w_aliddns');
+	init_itoggle('w_caddy');
+	init_itoggle('w_wyy');	
 });
 </script>
 <script>
@@ -68,6 +70,15 @@ if (found_app_adbyby() || found_app_koolproxy()){
 }
 if (found_app_smartdns() || found_app_adguardhome()){
 	showhide_div('row_wpdnsd', true);
+}
+if (found_app_aliddns() || found_app_zerotier()){
+	showhide_div('row_aliddns', true);
+}
+if (found_app_caddy()){
+	showhide_div('row_caddy', true);
+}
+if (found_app_wyy()){
+	showhide_div('row_wyy', true);
 }
 }
 
@@ -266,7 +277,7 @@ function applyRule(){
 											</td>
 										</tr>
 										<tr id="row_wss" style="display:none">
-											<th width="50%">科学上网</th>
+											<th width="50%">看看世界</th>
 											<td>
 													<div class="main_itoggle">
 													<div id="w_ss_on_of">
@@ -308,7 +319,7 @@ function applyRule(){
 											</td>
 										</tr>
 										<tr id="row_wpdnsd" style="display:none">
-											<th width="50%" >DNS加速</th>
+											<th width="50%" >DNS服务</th>
 											<td>
 													<div class="main_itoggle">
 													<div id="w_pdnsd_on_of">
@@ -321,7 +332,48 @@ function applyRule(){
 												</div>
 											</td>
 										</tr>
-										
+										<tr id="row_aliddns" style="display:none">
+											<th width="50%" >穿透服务</th>
+											<td>
+													<div class="main_itoggle">
+													<div id="w_aliddns_on_of">
+														<input type="checkbox" id="w_aliddns_fake" <% nvram_match_x("", "w_aliddns", "1", "value=1 checked"); %><% nvram_match_x("", "w_aliddns", "0", "value=0"); %>  />
+													</div>
+												</div>
+												<div style="position: absolute; margin-left: -10000px;">
+													<input type="radio" value="1" name="w_aliddns" id="w_aliddns_1" class="input" <% nvram_match_x("", "w_aliddns", "1", "checked"); %> /><#checkbox_Yes#>
+													<input type="radio" value="0" name="w_aliddns" id="w_aliddns_0" class="input" <% nvram_match_x("", "w_aliddns", "0", "checked"); %> /><#checkbox_No#>
+												</div>
+											</td>
+										</tr>										
+										<tr id="row_caddy" style="display:none">
+											<th width="50%" >文件管理</th>
+											<td>
+													<div class="main_itoggle">
+													<div id="w_caddy_on_of">
+														<input type="checkbox" id="w_caddy_fake" <% nvram_match_x("", "w_caddy", "1", "value=1 checked"); %><% nvram_match_x("", "w_caddy", "0", "value=0"); %>  />
+													</div>
+												</div>
+												<div style="position: absolute; margin-left: -10000px;">
+													<input type="radio" value="1" name="w_caddy" id="w_caddy_1" class="input" <% nvram_match_x("", "w_caddy", "1", "checked"); %> /><#checkbox_Yes#>
+													<input type="radio" value="0" name="w_caddy" id="w_caddy_0" class="input" <% nvram_match_x("", "w_caddy", "0", "checked"); %> /><#checkbox_No#>
+												</div>
+											</td>
+										</tr>										
+										<tr id="row_wyy" style="display:none">
+											<th width="50%" >音乐解锁</th>
+											<td>
+													<div class="main_itoggle">
+													<div id="w_wyy_on_of">
+														<input type="checkbox" id="w_wyy_fake" <% nvram_match_x("", "w_wyy", "1", "value=1 checked"); %><% nvram_match_x("", "w_wyy", "0", "value=0"); %>  />
+													</div>
+												</div>
+												<div style="position: absolute; margin-left: -10000px;">
+													<input type="radio" value="1" name="w_wyy" id="w_wyy_1" class="input" <% nvram_match_x("", "w_wyy", "1", "checked"); %> /><#checkbox_Yes#>
+													<input type="radio" value="0" name="w_wyy" id="w_wyy_0" class="input" <% nvram_match_x("", "w_wyy", "0", "checked"); %> /><#checkbox_No#>
+												</div>
+											</td>
+										</tr>										
 									
 											<td colspan="2">
 												<br />
