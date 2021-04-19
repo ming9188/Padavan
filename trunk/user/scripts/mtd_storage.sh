@@ -221,7 +221,7 @@ func_fill()
 	user_sswan_conf="$dir_sswan/strongswan.conf"
 	user_sswan_ipsec_conf="$dir_sswan/ipsec.conf"
 	user_sswan_secrets="$dir_sswan/ipsec.secrets"
-	
+	user_caddy_script="/etc_ro/caddy_script.sh"
 	chnroute_file="/etc_ro/chnroute.bz2"
 	#gfwlist_conf_file="/etc_ro/gfwlist.bz2"
 
@@ -238,7 +238,10 @@ func_fill()
 			mkdir -p "$dir_ca" && ln -s "$user_ca" "$dir_ca"
 		fi
 	fi
-	
+	# cp caddy_script.sh to /etc/storage
+	if [ -f "$user_caddy_script" ]; then
+			cp $user_caddy_script $dir_storage
+	fi
 	# create chnroute.txt
 	if [ ! -d "$dir_chnroute" ] ; then
 		if [ -f "$chnroute_file" ]; then
