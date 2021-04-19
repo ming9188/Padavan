@@ -124,7 +124,8 @@ get_bin(){
 wyy_bin="/usr/bin/UnblockNeteaseMusic"
 if [ ! -f "$wyy_bin" ]; then
 if [ ! -f "/tmp/UnblockNeteaseMusic" ];then
-	curl -k -s -o /tmp/UnblockNeteaseMusic --connect-timeout 10 --retry 3 https://cdn.jsdelivr.net/kkddcclloo/PDN/UnblockNeteaseMusic
+	opt_src=`nvram get opt_src`
+	curl -k -s -o /tmp/UnblockNeteaseMusic --connect-timeout 10 --retry 3 ${opt_src}UnblockNeteaseMusic
 	if [ ! -f "/tmp/UnblockNeteaseMusic" ]; then
 		logger -t "音乐解锁" "二进制文件下载失败，可能是地址失效或者网络异常！"
 		nvram set wyy_enable=0
