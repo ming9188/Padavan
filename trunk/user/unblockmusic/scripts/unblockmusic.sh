@@ -74,11 +74,11 @@ add_rule()
 	$ipt_n -A CLOUD_MUSIC -d 224.0.0.0/4 -j RETURN
 	$ipt_n -A CLOUD_MUSIC -d 240.0.0.0/4 -j RETURN
 	if [ "$APPTYPE" != "cloud" ]; then
-    $ipt_n -A CLOUD_MUSIC -p tcp -m set ! --match-set music_http src --dport 80 -j REDIRECT --to-ports 5200
-    $ipt_n -A CLOUD_MUSIC -p tcp -m set ! --match-set music_https src --dport 443 -j REDIRECT --to-ports 5201
-  else
-    $ipt_n -A CLOUD_MUSIC -p tcp -m set ! --match-set music_http src --dport 80 -j DNAT --to $cloudip:$cloudhttp
-    $ipt_n -A CLOUD_MUSIC -p tcp -m set ! --match-set music_https src --dport 443 -j DNAT --to $cloudip:$cloudhttps
+	    $ipt_n -A CLOUD_MUSIC -p tcp -m set ! --match-set music_http src --dport 80 -j REDIRECT --to-ports 5200
+	    $ipt_n -A CLOUD_MUSIC -p tcp -m set ! --match-set music_https src --dport 443 -j REDIRECT --to-ports 5201
+	  else
+	    $ipt_n -A CLOUD_MUSIC -p tcp -m set ! --match-set music_http src --dport 80 -j DNAT --to $cloudip:$cloudhttp
+	    $ipt_n -A CLOUD_MUSIC -p tcp -m set ! --match-set music_https src --dport 443 -j DNAT --to $cloudip:$cloudhttps
 	fi
 	$ipt_n -I PREROUTING -p tcp -m set --match-set music dst -j CLOUD_MUSIC
 	iptables -I OUTPUT -d 223.252.199.10 -j DROP
@@ -101,9 +101,9 @@ del_rule(){
 }
 
 set_firewall(){
-	rm -f /tmp/dnsmasq.music/dnsmasq-163.conf
-	mkdir -p /tmp/dnsmasq.music
-  	cat <<-EOF > "/tmp/dnsmasq.music/dnsmasq-163.conf"
+rm -f /tmp/dnsmasq.music/dnsmasq-163.conf
+mkdir -p /tmp/dnsmasq.music
+cat <<-EOF > "/tmp/dnsmasq.music/dnsmasq-163.conf"
 ipset=/.music.163.com/music
 ipset=/interface.music.163.com/music
 ipset=/interface3.music.163.com/music
@@ -149,22 +149,23 @@ wyy_start()
 		musictype="-o $TYPE"
 	fi
 	if [ "$APPTYPE" == "go" ]; then
-	if [ $FLAC -eq 1 ]; then
-      ENABLE_FLAC="-b "
-    fi
-    get_bin
-    $wyy_bin $ENABLE_FLAC -p 5200 -sp 5201 -m 0 -c /etc_ro/UnblockNeteaseMusicGo/server.crt -k /etc_ro/UnblockNeteaseMusicGo/server.key -m 0 -e >/dev/null 2>&1 &
-    logger -t "音乐解锁" "启动 Golang Version (http:5200, https:5201)"    
-  else
-    kill -9 $(busybox ps -w | grep 'sleep 60m' | grep -v grep | awk '{print $1}') >/dev/null 2>&1
-    /usr/bin/UnblockNeteaseMusicCloud >/dev/null 2>&1 &
-     logger -t "音乐解锁" "启动 Cloud Version - Server: $cloudip (http:$cloudhttp, https:$cloudhttps)"
+		if [ $FLAC -eq 1 ]; then
+      			ENABLE_FLAC="-b "
+		fi
+		get_bin
+		logger -t "音乐解锁" "$wyy_bin" 
+		$wyy_bin $ENABLE_FLAC -p 5200 -sp 5201 -m 0 -c /etc_ro/UnblockNeteaseMusicGo/server.crt -k /etc_ro/UnblockNeteaseMusicGo/server.key -m 0 -e >/dev/null 2>&1 &
+		logger -t "音乐解锁" "启动 Golang Version (http:5200, https:5201)"    
+	else
+		kill -9 $(busybox ps -w | grep 'sleep 60m' | grep -v grep | awk '{print $1}') >/dev/null 2>&1
+		/usr/bin/UnblockNeteaseMusicCloud >/dev/null 2>&1 &
+		logger -t "音乐解锁" "启动 Cloud Version - Server: $cloudip (http:$cloudhttp, https:$cloudhttps)"
 	fi
 		
 	set_firewall
 	
   if [ "$APPTYPE" != "cloud" ]; then
-    /usr/bin/logcheck.sh >/dev/null 2>&1 &
+	/usr/bin/logcheck.sh >/dev/null 2>&1 &
   fi
 }
 
