@@ -32,8 +32,7 @@ ss_turn=`nvram get ss_turn`
 lan_con=`nvram get lan_con`
 GLOBAL_SERVER=`nvram get global_server`
 socks=""
-opt_src="https://opt.cn2qq.com/opt-file/"
-
+opt_src=`nvram get opt_src`
 find_bin() {
 	case "$1" in
 	ss) ret="/usr/bin/ss-redir" ;;
