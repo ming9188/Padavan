@@ -28,6 +28,14 @@ caddy_start ()
 				fi
 			fi
 		fi
+
+
+		if [ ! -f "/etc/storage/caddy_script.sh"  ] ; then
+			cp /etc_ro/caddy_script.sh /etc/storage/
+			chmod -R 777 /etc/storage/caddy_script.sh
+			logger -t "caddy" "复制配置脚本文件"
+		fi
+
 		/etc/storage/caddy_script.sh
 		if [ "$caddy_wan" = "1" ] ; then
 			if [ "$caddy_file" = "0" ] || [ "$caddy_file" = "2" ]; then
