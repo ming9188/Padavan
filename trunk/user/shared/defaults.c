@@ -485,7 +485,11 @@ struct nvram_pair router_defaults[] = {
 	{ "w_men", "1" },
 	{ "w_adbyby", "1" },
 	{ "w_pdnsd", "1" },
-	
+	{ "w_aliddns", "1" },
+	{ "w_caddy", "1" },
+	{ "w_wyy", "1" },
+	{ "opt_src", "https://cdn.jsdelivr.net/gh/kkddcclloo/pdn/" },  /*opt_src download url */
+		
 	{ "ip6_service", "" },
 	{ "ip6_ppe_on", "0" },
 	{ "ip6_wan_if", "0" },
