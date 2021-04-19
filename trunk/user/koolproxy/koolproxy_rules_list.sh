@@ -26,5 +26,5 @@
 #（可选项：前面添加#停用规则,删除前面的#可生效）
 1|koolproxy.txt|https://cdn.jsdelivr.net/gh/kkddcclloo/pdn/koolproxy.txt|
 1|daily.txt|https://cdn.jsdelivr.net/gh/kkddcclloo/pdn/daily.txt|
-1|kp.dat|hhttps://cdn.jsdelivr.net/gh/kkddcclloo/pdn/kp.dat|
-1|https://cdn.jsdelivr.net/gh/kkddcclloo/pdn/user.txt||
+1|kp.dat|https://cdn.jsdelivr.net/gh/kkddcclloo/pdn/kp.dat|
+1|user.txt|https://cdn.jsdelivr.net/gh/kkddcclloo/pdn/user.txt|
