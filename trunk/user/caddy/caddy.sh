@@ -9,6 +9,7 @@ http_username=`nvram get http_username`
 caddyf_wan_port=`nvram get caddyf_wan_port`
 caddyw_wan_port=`nvram get caddyw_wan_port`
 caddy_wip6=`nvram get caddy_wip6`
+opt_src=`nvram get opt_src`
 
 caddy_start () 
 {
@@ -17,7 +18,7 @@ caddy_start ()
 		caddybin="/usr/bin/caddy_filebrowser"
 		if [ ! -f "$caddybin" ]; then
 			if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
-				curl -k -s -o $caddy_dir/caddy/caddy_filebrowser --connect-timeout 10 --retry 3 https://cdn.jsdelivr.net/gh/kkddcclloo/pdn/caddy_filebrowser
+				curl -k -s -o $caddy_dir/caddy/caddy_filebrowser --connect-timeout 10 --retry 3 ${opt_src}caddy_filebrowser
 				if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
 					logger -t "caddy" "caddy_filebrowser二进制文件下载失败，可能是地址失效或者网络异常！"
 					nvram set caddy_enable=0
