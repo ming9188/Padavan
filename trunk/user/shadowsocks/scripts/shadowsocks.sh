@@ -64,9 +64,15 @@ get_bin_tmp() {
 	socks5) ret="ipt2socks" ;;
 	esac
 	[ ! -d "/tmp/bin" ] && mkdir "/tmp/bin"
-	wget -P "/tmp/bin/" $opt_src$ret 
-	chmod 755 -R "/tmp/bin/"
+	curl -k -s -o "/tmp/bin/$ret"  --connect-timeout 10 --retry 3 ${opt_src}$ret
+	if [ ! -f "/tmp/bin/$ret" ]; then
+		logger -t "SS" "${opt_src}$ret二进制文件下载失败，可能是地址失效或者网络异常！"
+	else
+		logger -t "SS" "${opt_src}$ret二进制文件下载成功"
+		chmod -R 777 "/tmp/bin/"
+	fi 
 	echo "/tmp/bin/"$ret
+	
 }
 
 gen_config_file() {
