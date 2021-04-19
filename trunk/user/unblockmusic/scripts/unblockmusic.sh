@@ -127,11 +127,11 @@ if [ ! -f "/tmp/UnblockNeteaseMusic" ];then
 	opt_src=`nvram get opt_src`
 	curl -k -s -o /tmp/UnblockNeteaseMusic --connect-timeout 10 --retry 3 ${opt_src}UnblockNeteaseMusic
 	if [ ! -f "/tmp/UnblockNeteaseMusic" ]; then
-		logger -t "音乐解锁" "二进制文件下载失败，可能是地址失效或者网络异常！"
+		logger -t "音乐解锁" "${opt_src}二进制文件下载失败，可能是地址失效或者网络异常！"
 		nvram set wyy_enable=0
 		wyy_close
 	else
-		logger -t "音乐解锁" "二进制文件下载成功"
+		logger -t "音乐解锁" "${opt_src}二进制文件下载成功"
 		chmod -R 777 /tmp/UnblockNeteaseMusic
 		wyy_bin="/tmp/UnblockNeteaseMusic"
 	fi
