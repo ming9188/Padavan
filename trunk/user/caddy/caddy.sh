@@ -20,11 +20,11 @@ caddy_start ()
 			if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
 				curl -k -s -o $caddy_dir/caddy/caddy_filebrowser --connect-timeout 10 --retry 3 ${opt_src}caddy_filebrowser
 				if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
-					logger -t "caddy" "caddy_filebrowser二进制文件下载失败，可能是地址失效或者网络异常！"
+					logger -t "caddy" "${opt_src}caddy_filebrowser二进制文件下载失败，可能是地址失效或者网络异常！"
 					nvram set caddy_enable=0
 					caddy_close
 				else
-					logger -t "caddy" "caddy_filebrowser二进制文件下载成功"
+					logger -t "caddy" "${opt_src}caddy_filebrowser二进制文件下载成功"
 					chmod -R 777 $caddy_dir/caddy/caddy_filebrowser
 				fi
 			fi
