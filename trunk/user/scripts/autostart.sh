@@ -1,16 +1,8 @@
 #!/bin/sh
 #nvram set ntp_ready=0
-if [ $(nvram get sdns_enable) = 1 ] ; then
-logger -t "自动启动" "正在启动SmartDns"
-/usr/bin/smartdns.sh start
-fi
 
-if [ $(nvram get caddy_enable) = 1 ] ; then
-logger -t "自动启动" "正在启动文件管理"
-/usr/bin/caddy.sh start
-fi
 
-logger -t "自动启动" "正在检查路由是否已连接互联网！"
+logger -t "自动启动" "ntp_ready=${ntp_ready}正在检查路由是否已连接互联网！"
 count=0
 while :
 do
@@ -23,7 +15,7 @@ do
 		break
 	fi
 	sleep 5
-	ping -c 1 -W 1 -q www.google.com 1>/dev/null 2>&1
+	ping -c 1 -W 1 -q 114.114.114.114 1>/dev/null 2>&1
 	if [ "$?" == "0" ]; then
 		break
 	fi
@@ -37,6 +29,18 @@ do
 		break
 	fi
 done
+
+logger -t "自动启动" "ntp_ready=${ntp_ready}！"
+
+if [ $(nvram get sdns_enable) = 1 ] ; then
+logger -t "自动启动" "正在启动SmartDns"
+/usr/bin/smartdns.sh start
+fi
+
+if [ $(nvram get caddy_enable) = 1 ] ; then
+logger -t "自动启动" "正在启动文件管理"
+/usr/bin/caddy.sh start
+fi
 
 if [ $(nvram get adbyby_enable) = 1 ] ; then
 logger -t "自动启动" "正在启动adbyby plus+"
