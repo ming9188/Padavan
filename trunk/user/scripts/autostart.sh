@@ -2,7 +2,7 @@
 #nvram set ntp_ready=0
 
 
-logger -t "自动启动" "ntp_ready=`nvram get ntp_ready`，正在检查路由是否已连接互联网！"
+logger -t "自动启动" "ntp_ready=`nvram get ntp_ready`,第一步->检查路由是否已联网！"
 count=0
 while :
 do
@@ -30,7 +30,7 @@ do
 	fi
 done
 
-logger -t "自动启动" "ntp_ready=`nvram get ntp_ready`,已启动！"
+logger -t "自动启动" "ntp_ready=`nvram get ntp_ready`,第二步->启动应用程序！"
 
 if [ $(nvram get sdns_enable) = 1 ] ; then
 logger -t "自动启动" "正在启动SmartDns"
