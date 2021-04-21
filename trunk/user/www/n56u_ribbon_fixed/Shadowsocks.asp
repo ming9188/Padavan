@@ -110,6 +110,14 @@ document.getElementById('btn_ctime').style.display="inline";
 		document.getElementById('btn_ctime').value='正在运行脚本:' + t +"s";
     },1000);
 }
+function clearLog(){
+	document.form.action="apply.cgi";
+	document.form.current_page.value = "Shadowsocks.asp#log";
+	document.form.next_host.value = location.host;
+	document.form.action_mode.value = " ClearssLog ";
+	document.form.submit();
+}
+
 function dtime() {
 clearInterval(c);
 document.getElementById('btn_ctime').value='脚本运行完成!';
@@ -2520,6 +2528,11 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 															<input type="button" onClick="javascript:window.location.reload();"
 																value="<#CTL_refresh#>" class="btn btn-primary"
 																style="width: 200px">
+														</td>
+														<td width="75%" style="text-align: right; padding-bottom: 0px;">
+															<input type="button" onClick="clearLog();" value="<#CTL_clear#>" class="btn btn-primary" style="width: 200px">
+
+																
 														</td>
 													</tr>
 												</table>
