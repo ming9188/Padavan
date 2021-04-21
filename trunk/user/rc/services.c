@@ -156,7 +156,7 @@ restart_networkmap(void)
 {
 	if (pids("networkmap"))
 		doSystem("killall %s %s", "-KILL", "networkmap");
-	else
+	fi
 		start_networkmap(0);
 }
 
