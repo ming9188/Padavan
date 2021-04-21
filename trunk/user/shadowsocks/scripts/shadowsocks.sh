@@ -499,9 +499,7 @@ ssp_close() {
 	if [ -f "/etc/storage/dnsmasq-ss.d" ]; then
 		rm -f /etc/storage/dnsmasq-ss.d
 	fi
-	if [ -f "/tmp/ssrplus.log" ]; then
-		rm -f /tmp/ssrplus.log
-	fi
+
 
 	clear_iptable
 	/sbin/restart_dhcpd
