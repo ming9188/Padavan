@@ -58,7 +58,7 @@ logger -t "自动启动" "正在启动阿里ddns"
 fi
 
 if [ $(nvram get ss_enable) = 1 ] ; then
-logger -t "自动启动" "正在启动科学上网"
+logger -t "自动启动" "正在启动看看世界"
 /usr/bin/shadowsocks.sh start
 fi
 
@@ -76,3 +76,4 @@ if [ $(nvram get zerotier_enable) = 1 ] ; then
 logger -t "自动启动" "正在启动zerotier"
 /usr/bin/zerotier.sh start
 fi
+logger -t "自动启动" "ntp_ready=`nvram get ntp_ready`,第三步->应用程序已启动！"
