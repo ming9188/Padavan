@@ -3597,6 +3597,13 @@ apply_cgi(const char *url, webs_t wp)
 		websRedirect(wp, current_url);
 		return 0;
 	}
+	else if (!strcmp(value, " ClearssLog "))
+	{
+		// current only syslog implement this button
+		unlink("/tmp/ssrplus.log");
+		websRedirect(wp, current_url);
+		return 0;
+	}
 	else if (!strcmp(value, " Reboot "))
 	{
 	    sys_reboot();
