@@ -469,6 +469,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 					// 渲染父节点  obj 需要渲染的数据 keyStr key需要去除的字符串
 					var keyStr = "ssconf_basic_json_";
 					var nodeList = document.getElementById("nodeList"); // 获取节点
+					var backupnodeList = document.getElementById("backupnodeList");
 					var unodeList = document.getElementById("u_nodeList"); // 获取节点
 					var s5nodeList = document.getElementById("s5_nodeList"); // 获取节点
 					for (var key in db_ss) { // 遍历对象
@@ -478,8 +479,10 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 							.alias ? optionObj.alias : "名字获取失败"); // 判断下怕获取失败 ，括号是运算的问题
 						// 添加 
 						nodeList.options.add(new Option(text, key.replace(keyStr, ''))); // 通过 replacce把不要的字符去掉
+						backupnodeList.options.add(new Option(text, key.replace(keyStr, ''))); // 通过 replacce把不要的字符去掉
 						unodeList.options.add(new Option(text, key.replace(keyStr, ''))); // 通过 replacce把不要的字符去掉
 						s5nodeList.options.add(new Option(text, key.replace(keyStr, ''))); // 通过 replacce把不要的字符去掉
+						//global_server
 						$j('#nodeList>option').sort(function (a, b) {
 							var aText = $j(a).val() * 1;
 							var bText = $j(b).val() * 1;
@@ -488,6 +491,16 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 							return 0;
 						}).appendTo('#nodeList');
 						$j('#nodeList>option').eq(0).attr("selected", "selected");
+						
+						//backup_server
+						$j('#backupnodeList>option').sort(function (a, b) {
+							var aText = $j(a).val() * 1;
+							var bText = $j(b).val() * 1;
+							if (aText > bText) return -1;
+							if (aText < bText) return 1;
+							return 0;
+						}).appendTo('#backupnodeList');
+						$j('#backupnodeList>option').eq(0).attr("selected", "selected");
 						//udp列表
 						$j('#u_nodeList>option').sort(function (a, b) {
 							var aText = $j(a).val() * 1;
@@ -509,6 +522,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 						//$j('#nodeList').selectpicker('val', '<% nvram_get_x("","global_server"); %>'); //主服务器列表默认
 						//$j('#u_nodeList').selectpicker('val', '<% nvram_get_x("","udp_relay_server"); %>'); //UDP服务器列表默认
 						document.form.global_server.value = '<% nvram_get_x("","global_server"); %>';
+						document.form.backup_server.value = '<% nvram_get_x("","backup_server"); %>';
 						document.form.udp_relay_server.value = '<% nvram_get_x("","udp_relay_server"); %>';
 						document.form.socks5_enable.value = '<% nvram_get_x("","socks5_enable"); %>';
 						//}
@@ -1452,6 +1466,16 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 															</select>
 														</td>
 													</tr>
+																										<tr>
+														<th>备用服务器:
+														</th>
+														<td>
+															<select name="backup_server" id="backupnodeList"
+																style="width: 200px;" onchange="showsdlinkList()">
+																<option value="nil">停用</option>
+															</select>
+														</td>
+													</tr>
 													<tr>
 														<th>游戏UDP中继服务器:
 														</th>
@@ -2229,20 +2253,20 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 															</div>
 														</td>
 													</tr>
-													<!--  <tr> <th>启用自动切换</th>
-<td>
-<div class="main_itoggle">
-<div id="ss_turn_on_of">
-<input type="checkbox" id="ss_turn_fake" <% nvram_match_x("", "ss_turn", "1", "value=1 checked"); %><% nvram_match_x("", "ss_turn", "0", "value=0"); %>>
-</div>
-</div>
-<div style="position: absolute; margin-left: -10000px;">
-<input type="radio" value="1" name="ss_turn" id="ss_turn_1" <% nvram_match_x("", "ss_turn", "1", "checked"); %>><#checkbox_Yes#>
-<input type="radio" value="0" name="ss_turn" id="ss_turn_0" <% nvram_match_x("", "ss_turn", "0", "checked"); %>><#checkbox_No#>
-</div>
-</td>
-</tr>
--->
+													<tr> <th>启用自动切换</th>
+																<td>
+																	<div class="main_itoggle">
+																	<div id="ss_turn_on_of">
+																	<input type="checkbox" id="ss_turn_fake" <% nvram_match_x("", "ss_turn", "1", "value=1 checked"); %><% nvram_match_x("", "ss_turn", "0", "value=0"); %>>
+																	</div>
+																	</div>
+																	<div style="position: absolute; margin-left: -10000px;">
+																	<input type="radio" value="1" name="ss_turn" id="ss_turn_1" <% nvram_match_x("", "ss_turn", "1", "checked"); %>><#checkbox_Yes#>
+																	<input type="radio" value="0" name="ss_turn" id="ss_turn_0" <% nvram_match_x("", "ss_turn", "0", "checked"); %>><#checkbox_No#>
+																	</div>
+																</td>
+													</tr>
+
 													<tr>
 														<th width="50%">自动切换检查周期(秒)</th>
 														<td>
@@ -2493,7 +2517,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 													</tr>
 													<tr>
 														<td width="15%" style="text-align: left; padding-bottom: 0px;">
-															<input type="button" onClick="location.href=location.href"
+															<input type="button" onClick="javascript:window.location.reload();"
 																value="<#CTL_refresh#>" class="btn btn-primary"
 																style="width: 200px">
 														</td>
