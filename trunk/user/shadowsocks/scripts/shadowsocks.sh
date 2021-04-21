@@ -281,16 +281,23 @@ start_redir_udp() {
 	fi
 	return 0
 	}
+start_ss_switch() {
 	ss_switch=$(nvram get backup_server)
-	if [ $ss_switch != "nil" ]; then
+	ss_turn=$(nvram get ss_turn)
+	if [ $ss_switch != "nil" ] && [ $ss_turn = 1 ]; then
 		switch_time=$(nvram get ss_turn_s)
 		switch_timeout=$(nvram get ss_turn_ss)
-		#/usr/bin/ssr-switch start $switch_time $switch_timeout &
+		/usr/bin/ssr-switch start $switch_time $switch_timeout &
 		socks="-o"
+		echo "$(date "+%Y-%m-%d %H:%M:%S") 启用自动切换。" >> /tmp/ssrplus.log
+	else
+		echo "$(date "+%Y-%m-%d %H:%M:%S") 未启用自动切换。" >> /tmp/ssrplus.log
+
+
 	fi
 	#return $?
 
-
+}
 
 start_dns() {
 case "$run_mode" in
@@ -429,6 +436,10 @@ start_watchcat() {
 		if [ $total_count -gt 0 ]; then
 			#param:server(count) redir_tcp(0:no,1:yes)  redir_udp tunnel kcp local gfw
 			/usr/bin/ssr-monitor $server_count $redir_tcp $redir_udp $tunnel_enable $v2ray_enable $local_enable $pdnsd_enable_flag $chinadnsng_enable_flag >/dev/null 2>&1 &
+			echo "$(date "+%Y-%m-%d %H:%M:%S") 启用进程自动守护。" >> /tmp/ssrplus.log
+		else
+			echo "$(date "+%Y-%m-%d %H:%M:%S") 未启用进程自动守护。" >> /tmp/ssrplus.log
+
 		fi
 	fi
 }
@@ -462,13 +473,14 @@ if rules; then
 		fi
         start_local
         start_watchcat
+	start_ss_switch
         auto_update
         ENABLE_SERVER=$(nvram get global_server)
         [ "$ENABLE_SERVER" = "-1" ] && return 1
 
         logger -t "SS" "启动成功。"
         logger -t "SS" "内网IP控制为:$lancons"
-        nvram set check_mode=0
+        #nvram set check_mode=0
 }
 
 # ================================= 关闭SS ===============================
@@ -487,6 +499,10 @@ ssp_close() {
 	if [ -f "/etc/storage/dnsmasq-ss.d" ]; then
 		rm -f /etc/storage/dnsmasq-ss.d
 	fi
+	if [ -f "/tmp/ssrplus.log" ]; then
+		rm -f /tmp/ssrplus.log
+	fi
+
 	clear_iptable
 	/sbin/restart_dhcpd
 }
@@ -591,15 +607,14 @@ kill_process() {
 # ================================= 重启 SS ===============================
 ressp() {
 	BACKUP_SERVER=$(nvram get backup_server)
-	start_redir $BACKUP_SERVER
-	start_rules $BACKUP_SERVER
-	start_dns
-	start_local
-	start_watchcat
-	auto_update
-	ENABLE_SERVER=$(nvram get global_server)
-	logger -t "SS" "备用服务器启动成功"
+	TMP_SERVER=$GLOBAL_SERVER
+	GLOBAL_SERVER=$BACKUP_SERVER
+	BACKUP_SERVER=$TMP_SERVER
+	`nvram set global_server=$GLOBAL_SERVER`
+	`nvram set backup_server=$BACKUP_SERVER`
+	logger -t "SS" "成功切换到$GLOBAL_SERVER号服务器"
 	logger -t "SS" "内网IP控制为:$lancons"
+	ssp_start
 }
 
 case $1 in

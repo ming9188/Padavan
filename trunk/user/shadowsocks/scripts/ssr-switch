@@ -1,5 +1,5 @@
 #!/bin/sh
-#
+
 # Copyright (C) 2017 openwrt-ssr
 # Copyright (C) 2017 yushi studio <ywb94@qq.com>
 # Copyright (C) 2019 chongshengB
@@ -31,18 +31,18 @@ check_proxy() {
     /usr/bin/ss-check www.google.com 80 $switch_time 1
     check=$?
     if [ "$check" == "0" ]; then
-      # echo "$(date "+%Y-%m-%d %H:%M:%S") Check Google Proxy Success, count=$i" >> /tmp/ssrplus.log
+      echo "$(date "+%Y-%m-%d %H:%M:%S") ${CURRENT_SERVER}号服务器已连接,检测方式:google" >> /tmp/ssrplus.log
       result=0
       break
     else
     	/usr/bin/ss-check www.youtube.com 80 $switch_time 1
     check=$?
     if [ "$check" == "0" ]; then
-      # echo "$(date "+%Y-%m-%d %H:%M:%S") Check Google Proxy Success, count=$i" >> /tmp/ssrplus.log
+      echo "$(date "+%Y-%m-%d %H:%M:%S") ${CURRENT_SERVER}号服务器已连接,检测方式:youtube" >> /tmp/ssrplus.log
       result=0
       break
     else
-      # echo "$(date "+%Y-%m-%d %H:%M:%S") Check Google Proxy Fail, count=$i" >> /tmp/ssrplus.log
+     echo "$(date "+%Y-%m-%d %H:%M:%S") ${CURRENT_SERVER}号服务器连接失败, 检测次数=$i，3次后自动切换。" >> /tmp/ssrplus.log
       /usr/bin/ss-check www.baidu.com 80 $switch_time 1
       check=$?
       if [ "$check" == "0" ]; then
@@ -66,13 +66,13 @@ do
 if [ "$current_ret" = "1" ] ;then
 #当前代理错误，判断有无可用的服务器
 if [ $(nvram get check_mode) = "1" ];then
-	echo "$(date "+%Y-%m-%d %H:%M:%S") 备用服务器也故障了,请检测主备服务器是否正常！" >> /tmp/ssrplus.log
+	echo "$(date "+%Y-%m-%d %H:%M:%S") 所有服务器挂掉了,关闭看看世界！" >> /tmp/ssrplus.log
 	nvram set ss_enable=0
 	nvram set check_mode=0
 	/usr/bin/shadowsocks.sh stop &
 	exit 0
 fi
-echo "$(date "+%Y-%m-%d %H:%M:%S") 检测到主服务器故障，切换到备用服务器。" >> /tmp/ssrplus.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") 检测到${CURRENT_SERVER}号服务器故障，切换到${BACKUP_SERVER}号服务器。" >> /tmp/ssrplus.log
 nvram set check_mode=1
 /usr/bin/shadowsocks.sh reserver &
 fi
