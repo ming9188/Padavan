@@ -1,42 +1,35 @@
 THISDIR = $(shell pwd)
-v2ray_dir="v2ray.com/core/main"
+PKG_NAME:=xray-core
+PKG_VERSION := 1.4.2
+PKG_RELEASE:=1
 export GO111MODULE=on
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 export GOPROXY=https://goproxy.io
-V2ray_VERSION := 4.37.2
-V2ray_URL := https://codeload.github.com/v2fly/v2ray-core/tar.gz/v$(V2ray_VERSION)
-V2RAY_SED_ARGS:=
-V2RAY_SED_ARGS += \
-	s/_ "v2ray.com\/core\/main\/json"/\/\/ &/; \
-	/\/\/ _ "v2ray.com\/core\/main\/jsonem"/s/\/\/ //;
-V2RAY_SED_ARGS += \
-	s/_ "v2ray.com\/core\/main\/json"/\/\/ &/;
 
-all:download_v2 build_extract build_v2ray
+PKG_URL := https://codeload.github.com/XTLS/xray-core/tar.gz/v$(PKG_VERSION)
 
-download_v2:
-	( if [ ! -f $(THISDIR)/v2ray-core-$(V2ray_VERSION).tar.gz ]; then \
-	curl --create-dirs -L $(V2ray_URL) -o $(THISDIR)/v2ray-core-$(V2ray_VERSION).tar.gz ; \
-	fi )
+all:download_PKG build_extract build
 
 build_extract:
-	mkdir -p $(THISDIR)/v2ray.com
+	mkdir -p $(THISDIR)/Xray   UnblockNeteaseMusicGo
 	mkdir -p $(THISDIR)/bin
-	( if [ ! -d $(THISDIR)/v2ray.com/core ]; then \
-	tar zxfv $(THISDIR)/v2ray-core-$(V2ray_VERSION).tar.gz -C $(THISDIR)/v2ray.com ; \
-	mv $(THISDIR)/v2ray.com/v2ray-core-$(V2ray_VERSION) $(THISDIR)/v2ray.com/core ; \
+	( if [ ! -d $(THISDIR)/Xray/$PKG_SOURCE ]; then \
+	tar zxfv $(THISDIR)/$PKG_SOURCE -C $(THISDIR)/Xray ; \
 	fi )
 
-build_v2ray:
-	( cd $(THISDIR)/$(v2ray_dir); \
-	sed -i \
-			'$(V2RAY_SED_ARGS)' \
-			distro/all/all.go ; \
+build:
+	( cd $(THISDIR)/Xray/$PKG_SOURCE; \
 	GOOS=linux GOARCH=mipsle go build -ldflags "-w -s" -o $(THISDIR)/bin/v2ray; \
 	upx --lzma --best $(THISDIR)/bin/v2ray; \
-	)
+	) 
+
+download_PKG:
+	( if [ ! -f $(THISDIR)/$PKG_SOURCE ]; then \
+	curl --create-dirs -L $(PKG_URL) -o $(THISDIR)/$PKG_SOURCE ; \
+	fi )
 
 clean:
-	rm -rf $(THISDIR)/v2ray.com
+	rm -rf $(THISDIR)/Xray
 	rm -rf $(THISDIR)/bin
 
 romfs:
