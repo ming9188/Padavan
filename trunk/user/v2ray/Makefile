@@ -11,17 +11,18 @@ PKG_URL := https://codeload.github.com/XTLS/xray-core/tar.gz/v$(PKG_VERSION)
 all:download_PKG build_extract build
 
 build_extract:
-	mkdir -p $(THISDIR)/Xray
+	mkdir -p $(THISDIR)/github.com/xtls/xray-core
 	mkdir -p $(THISDIR)/bin
-	( if [ ! -d $(THISDIR)/$(PKG_SOURCE) ]; then \
-	tar zxfv $(THISDIR)/$(PKG_SOURCE) -C $(THISDIR)/Xray ; \
+	( if [ ! -d $(THISDIR)/github.com/xtls/xray-core ]; then \
+	tar zxfv $(THISDIR)/$(PKG_SOURCE) -C $(THISDIR)/github.com/xtls ; \
+	mv $(THISDIR)/github.com/xtls/$(PKG_NAME)-$(PKG_VERSION) $(THISDIR)/github.com/xtls/xray-core ; \
 	fi )
 
 build:
-	( cd $(THISDIR)/Xray/$(PKG_NAME)-$(PKG_VERSION)/; \
-	GOOS=linux GOARCH=mipsle go build -o $(THISDIR)/bin/v2ray -trimpath -ldflags "-s -w -buildid=" ./main; \
+	( cd $(THISDIR)/github.com/xtls/xray-core; \
+	GOOS=linux GOARCH=mipsle go build -ldflags "-w -s" -o $(THISDIR)/bin/v2ray; \
 	upx --lzma --best $(THISDIR)/bin/v2ray; \
-	) 
+	)
 
 download_PKG:
 	( if [ ! -f $(THISDIR)/$(PKG_SOURCE) ]; then \
