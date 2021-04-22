@@ -30,7 +30,7 @@ download_PKG:
 	fi )
 
 clean:
-	rm -rf $(THISDIR)/Xray
+	rm -rf $(THISDIR)/github.com
 	rm -rf $(THISDIR)/bin
 
 romfs:
