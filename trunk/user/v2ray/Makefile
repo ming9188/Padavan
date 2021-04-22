@@ -19,7 +19,7 @@ build_extract:
 	fi )
 
 build:
-	( cd $(THISDIR)/github.com/xtls/xray-core; \
+	( cd $(THISDIR)/github.com/xtls/xray-core/main; \
 	GOOS=linux GOARCH=mipsle go build -ldflags "-w -s" -o $(THISDIR)/bin/v2ray; \
 	upx --lzma --best $(THISDIR)/bin/v2ray; \
 	)
