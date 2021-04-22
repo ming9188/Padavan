@@ -1,5 +1,5 @@
 THISDIR = $(shell pwd)
-PKG_NAME:=xray-core
+PKG_NAME:=Xray-core
 PKG_VERSION := 1.4.2
 PKG_RELEASE:=1
 export GO111MODULE=on
