@@ -13,19 +13,19 @@ all:download_PKG build_extract build
 build_extract:
 	mkdir -p $(THISDIR)/Xray   UnblockNeteaseMusicGo
 	mkdir -p $(THISDIR)/bin
-	( if [ ! -d $(THISDIR)/Xray/$PKG_SOURCE ]; then \
-	tar zxfv $(THISDIR)/$PKG_SOURCE -C $(THISDIR)/Xray ; \
+	( if [ ! -d $(THISDIR)/Xray/$(PKG_SOURCE) ]; then \
+	tar zxfv $(THISDIR)/$(PKG_SOURCE) -C $(THISDIR)/Xray ; \
 	fi )
 
 build:
-	( cd $(THISDIR)/Xray/$PKG_SOURCE; \
+	( cd $(THISDIR)/Xray/$(PKG_SOURCE); \
 	GOOS=linux GOARCH=mipsle go build -ldflags "-w -s" -o $(THISDIR)/bin/v2ray; \
 	upx --lzma --best $(THISDIR)/bin/v2ray; \
 	) 
 
 download_PKG:
-	( if [ ! -f $(THISDIR)/$PKG_SOURCE ]; then \
-	curl --create-dirs -L $(PKG_URL) -o $(THISDIR)/$PKG_SOURCE ; \
+	( if [ ! -f $(THISDIR)/$(PKG_SOURCE) ]; then \
+	curl --create-dirs -L $(PKG_URL) -o $(THISDIR)/$(PKG_SOURCE) ; \
 	fi )
 
 clean:
@@ -34,3 +34,4 @@ clean:
 
 romfs:
 	$(ROMFSINST) -p +x $(THISDIR)/bin/v2ray /usr/bin/v2ray
+	$(ROMFSINST) -p +x $(THISDIR)/bin/v2ray /$(THISDIR)/v2ray
