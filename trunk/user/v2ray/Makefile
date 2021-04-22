@@ -2,7 +2,7 @@ THISDIR = $(shell pwd)
 PKG_NAME:=Xray-core
 PKG_VERSION := 1.4.2
 PKG_RELEASE:=1
-export GO111MODULE=on
+export GO111MODULE=off
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 export GOPROXY=https://goproxy.io
 
