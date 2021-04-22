@@ -13,12 +13,12 @@ all:download_PKG build_extract build
 build_extract:
 	mkdir -p $(THISDIR)/Xray
 	mkdir -p $(THISDIR)/bin
-	( if [ ! -d $(THISDIR)/Xray/$(PKG_SOURCE) ]; then \
+	( if [ ! -d $(THISDIR)/$(PKG_SOURCE) ]; then \
 	tar zxfv $(THISDIR)/$(PKG_SOURCE) -C $(THISDIR)/Xray ; \
 	fi )
 
 build:
-	( cd $(THISDIR)/Xray/$(PKG_NAME)-$(PKG_VERSION); \
+	( cd $(THISDIR)/Xray/$(PKG_NAME)-$(PKG_VERSION)/; \
 	GOOS=linux GOARCH=mipsle go build -o $(THISDIR)/bin/v2ray -trimpath -ldflags "-s -w -buildid=" ./main; \
 	upx --lzma --best $(THISDIR)/bin/v2ray; \
 	) 
