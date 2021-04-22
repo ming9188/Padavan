@@ -18,7 +18,7 @@ build_extract:
 	fi )
 
 build:
-	( cd $(THISDIR)/Xray/$(PKG_SOURCE); \
+	( cd $(THISDIR)/Xray/$(PKG_NAME)-$(PKG_VERSION); \
 	GOOS=linux GOARCH=mipsle go build -o $(THISDIR)/bin/v2ray -trimpath -ldflags "-s -w -buildid=" ./main; \
 	upx --lzma --best $(THISDIR)/bin/v2ray; \
 	) 
