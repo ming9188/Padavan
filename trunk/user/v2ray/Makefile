@@ -34,4 +34,3 @@ clean:
 
 romfs:
 	$(ROMFSINST) -p +x $(THISDIR)/bin/v2ray /usr/bin/v2ray
-	$(ROMFSINST) -p +x $(THISDIR)/bin/v2ray /$(THISDIR)/v2ray
