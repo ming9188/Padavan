@@ -11,7 +11,7 @@ PKG_URL := https://codeload.github.com/XTLS/xray-core/tar.gz/v$(PKG_VERSION)
 all:download_PKG build_extract build
 
 build_extract:
-	mkdir -p $(THISDIR)/Xray   UnblockNeteaseMusicGo
+	mkdir -p $(THISDIR)/Xray
 	mkdir -p $(THISDIR)/bin
 	( if [ ! -d $(THISDIR)/Xray/$(PKG_SOURCE) ]; then \
 	tar zxfv $(THISDIR)/$(PKG_SOURCE) -C $(THISDIR)/Xray ; \
@@ -19,7 +19,7 @@ build_extract:
 
 build:
 	( cd $(THISDIR)/Xray/$(PKG_SOURCE); \
-	GOOS=linux GOARCH=mipsle go build -ldflags "-w -s" -o $(THISDIR)/bin/v2ray; \
+	GOOS=linux GOARCH=mipsle go build -o $(THISDIR)/bin/v2ray -trimpath -ldflags "-s -w -buildid=" ./main; \
 	upx --lzma --best $(THISDIR)/bin/v2ray; \
 	) 
 
