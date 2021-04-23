@@ -27,16 +27,16 @@ jobs:
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
+        GOOS: linux
+        GOARCH: mipsle
+        CGO_ENABLED: 0
+
       run: |
         sudo apt-get update
         sudo apt-get -y install unzip libtool-bin curl upx cmake gperf gawk flex bison nano xxd fakeroot \
         cpio git python-docutils gettext automake autopoint texinfo build-essential help2man \
         pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget
-    - name: Set up Go 1.16
-      uses: actions/setup-go@v2
-      with:
-        go-version: ^1.16
-      id: go
+
       
     - name: Clone source code
       run: |
@@ -44,12 +44,10 @@ jobs:
         cd /opt/rt-n56u/toolchain-mipsel
         sh dl_toolchain.sh
         mkdir -p /opt/images/
-    #modiy go language
-   # - name: Set Golang
-   #   run: |
-     #   cd /opt/hostedtoolcache/go
-      #  rm -rf /opt/hostedtoolcache/go/1.14.12
-     #   mv 1.15.5 1.14.12
+        
+     
+
+
     - name: Build Firmware
       env:
         TNAME: R2100
@@ -110,6 +108,7 @@ jobs:
         #echo "自定义项=y" >> .config
         #########################################################################################
         sudo ./clear_tree
+        sudo ./clear_tree_simple
         sudo ./build_firmware_modify $TNAME 0
         sudo mv -f images/*.trx /opt/images/
     - name : Upload packages
