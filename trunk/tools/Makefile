@@ -21,7 +21,7 @@ LDFLAGS   =
 
 -include $(LINUX_CONFIG)
 
-all:go_build
+all:  #go_build use hostedtoolcache go
 	make -C mkimage
 	mkdir -p sstrip
 	make -C $(SSTRIP_NAME)
