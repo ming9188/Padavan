@@ -26,6 +26,9 @@ jobs:
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
+        GOOS: linux
+        GOARCH: mipsle
+        CGO_ENABLED: 0
       run: |
         sudo apt-get update
         sudo apt-get -y install unzip upx libtool-bin curl cmake gperf gawk flex bison nano xxd fakeroot \
@@ -37,11 +40,8 @@ jobs:
         cd /opt/rt-n56u/toolchain-mipsel
         sh dl_toolchain.sh
         mkdir -p /opt/images/
-    - name: Set up Go 1.6
-      uses: actions/setup-go@v2
-      with:
-        go-version: ^1.16
-      id: go
+
+
     - name: Build Firmware
       env:
         TNAME: NEWIFI3
