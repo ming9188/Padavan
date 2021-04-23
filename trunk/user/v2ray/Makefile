@@ -13,7 +13,7 @@ all:download_PKG build_extract build
 build_extract:
 	mkdir -p $(THISDIR)/github.com/xtls
 	mkdir -p $(THISDIR)/bin
-	( if [ ! -d $(THISDIR)/github.com/xtls ]; then \
+	( if [ ! -d $(THISDIR)/github.com/xtls/xray-core ]; then \
 	tar zxfv $(THISDIR)/$(PKG_SOURCE) -C $(THISDIR)/github.com/xtls ; \
 	mv $(THISDIR)/github.com/xtls/$(PKG_NAME)-$(PKG_VERSION) $(THISDIR)/github.com/xtls/xray-core ; \
 	fi )
