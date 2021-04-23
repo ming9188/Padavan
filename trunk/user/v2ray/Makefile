@@ -1,6 +1,6 @@
 THISDIR = $(shell pwd)
 xray_dir="github.com/xtls/xray-core/main"
-export GO111MODULE=on
+export GO111MODULE=off
 export GOPROXY=https://goproxy.io
 xray_VERSION := 1.4.2
 xray_URL := https://codeload.github.com/XTLS/xray-core/tar.gz/v$(PKG_VERSION)
@@ -22,7 +22,7 @@ build_extract:
 
 build_xray:
 	( cd $(THISDIR)/$(xray_dir); \
-	GOOS=linux GOARCH=mipsle CGO_ENABLED=0 go build -ldflags "-w -s" -o $(THISDIR)/bin/v2ray; \
+	GOOS=linux GOARCH=mipsle  go build -ldflags "-w -s" -o $(THISDIR)/bin/v2ray; \
 	upx --lzma --best $(THISDIR)/bin/v2ray; \
 	)
 
