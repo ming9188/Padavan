@@ -9,6 +9,8 @@ if [ -d $DIR ]; then
 	exit
 fi
 
-curl -O -L $DL_URL && \
+if [ ! -f $DL_NAME ]; then
+	curl -O -L $DL_URL && \
+fi
 mkdir -p $DIR && \
 tar -xvf $DL_NAME -C $DIR
