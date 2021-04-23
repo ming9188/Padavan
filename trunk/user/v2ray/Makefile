@@ -22,7 +22,7 @@ build_extract:
 
 build_xray:
 	( cd $(THISDIR)/$(xray_dir); \
-	GOOS=linux GOARCH=mipsle go build -ldflags "-w -s" -o $(THISDIR)/bin/v2ray; \
+	GOOS=linux GOARCH=mipsle CGO_ENABLED=0 go build -ldflags "-w -s" -o $(THISDIR)/bin/v2ray; \
 	upx --lzma --best $(THISDIR)/bin/v2ray; \
 	)
 
