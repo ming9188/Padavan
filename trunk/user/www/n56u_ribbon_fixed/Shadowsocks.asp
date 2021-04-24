@@ -389,7 +389,14 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 					$j('#tab_ss_' + arrHashes[i]).parents('li').removeClass('active');
 				}
 			}
+			//refreshlog(curHash);
 			window.location.hash = curHash;
+		}
+		function refreshlog(curHash){
+		
+			if (curHash == '#log'){
+				window.location.reload();
+			}
 		}
 		function getHash() {
 			var curHash = window.location.hash.toLowerCase();
@@ -2517,15 +2524,15 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 													<tr>
 														<td colspan="3"
 															style="border-top: 0 none; padding-bottom: 0px;">
-															<textarea rows="21" class="span12"
-																style="height:377px; font-family:'Courier New', Courier, mono; font-size:13px;"
-																readonly="readonly" wrap="off"
-																id="textarea"><% nvram_dump("ssrplus.log",""); %></textarea>
+																	<textarea rows="21" class="span12" name="logtext"
+																		style="height:377px; font-family:'Courier New', Courier, mono; font-size:13px;"
+																		readonly="readonly" wrap="off"
+																		id="ssrplus_log"><% nvram_dump("ssrplus.log",""); %></textarea>
 														</td>
 													</tr>
 													<tr>
 														<td width="15%" style="text-align: left; padding-bottom: 0px;">
-															<input type="button" onClick="javascript:window.location.reload();"
+															<input type="button" onClick="refreshlog('#log');"
 																value="<#CTL_refresh#>" class="btn btn-primary"
 																style="width: 200px">
 														</td>
