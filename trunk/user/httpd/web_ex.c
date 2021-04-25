@@ -101,6 +101,7 @@ nvram_commit_safe(void)
 void
 sys_reboot(void)
 {
+	notify_rc("manual_wan_disconnect");
 #ifdef MTD_FLASH_32M_REBOOT_BUG
 	doSystem("/sbin/mtd_storage.sh %s", "save");
 	system("/bin/mtd_write -r unlock mtd1");
@@ -3606,7 +3607,6 @@ apply_cgi(const char *url, webs_t wp)
 	}
 	else if (!strcmp(value, " Reboot "))
 	{
-	    	notify_rc("manual_wan_disconnect");
 		sys_reboot();
 		return 0;
 	}
