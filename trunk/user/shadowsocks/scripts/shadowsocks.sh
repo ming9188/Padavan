@@ -41,6 +41,7 @@ find_bin() {
 	ssr-local) ret="/usr/bin/ssr-local" ;;
 	ssr-server) ret="/usr/bin/ssr-server" ;;
 	v2ray) ret="/usr/bin/v2ray" ;;
+	vless) ret="/usr/bin/v2ray" ;;
 	trojan) ret="/usr/bin/trojan" ;;
 	socks5) ret="/usr/bin/ipt2socks" ;;
 	esac
@@ -60,6 +61,7 @@ get_bin_tmp() {
 	ssr-local) ret="ssr-local" ;;
 	ssr-server) ret="ssr-server" ;;
 	v2ray) ret="v2ray" ;;
+	vless) ret="v2ray" ;;
 	trojan) ret="trojan" ;;
 	socks5) ret="ipt2socks" ;;
 	esac
@@ -111,6 +113,17 @@ local type=$stype
 		sed -i 's/\\//g' /tmp/v2-ssr-reudp.json
 		else
 		lua /etc_ro/ss/genv2config.lua $1 tcp 1080 >$v2_json_file
+		sed -i 's/\\//g' $v2_json_file
+		fi
+		;;
+	vless)
+		v2_bin="/usr/bin/v2ray"
+		v2ray_enable=1
+		if [ "$2" = "1" ]; then
+		lua /tmp/genvlessconfig.lua $1 udp 1080 >/tmp/v2-ssr-reudp.json
+		sed -i 's/\\//g' /tmp/v2-ssr-reudp.json
+		else
+		lua /tmp/genvlessconfig.lua $1 tcp 1080 >$v2_json_file
 		sed -i 's/\\//g' $v2_json_file
 		fi
 		;;
@@ -236,7 +249,7 @@ start_redir_tcp() {
 		done
 		echo "$(date "+%Y-%m-%d %H:%M:%S") $($bin --version 2>&1 | head -1) Started!" >>/tmp/ssrplus.log
 		;;
-	v2ray)
+	v2ray | vless)
 		$bin -config $v2_json_file >/dev/null 2>&1 &
 		echo "$(date "+%Y-%m-%d %H:%M:%S") $($bin -version | head -1) 启动成功!" >>/tmp/ssrplus.log
 		;;
@@ -247,6 +260,7 @@ start_redir_tcp() {
 		done
 	    ;;
 	esac
+	echo "$(date "+%Y-%m-%d %H:%M:%S") TCP协议类型:$stype" >>/tmp/ssrplus.log
 	return 0
 	}
 	
@@ -254,6 +268,10 @@ start_redir_udp() {
 	if [ "$UDP_RELAY_SERVER" != "nil" ]; then
 		redir_udp=1
 		logger -t "SS" "启动$utype游戏UDP中继服务器"
+		
+		if [ "$UDP_RELAY_SERVER" = "same" ]; then
+			nvram set ud_type $d_type
+		fi
 		utype=$(nvram get ud_type)
 		local bin=$(find_bin $utype)
 		[ ! -f "$bin" ] && echo "$(date "+%Y-%m-%d %H:%M:%S") UDP TPROXY Relay:Can't find $bin program, can't start!" >>/tmp/ssrplus.log && return 1
@@ -265,7 +283,7 @@ start_redir_udp() {
 			pid_file="/var/run/ssr-reudp.pid"
 			$bin -c $last_config_file $ARG_OTA -U -f /var/run/ssr-reudp.pid >/dev/null 2>&1
 			;;
-		v2ray)
+		v2ray | vless)
 			gen_config_file $UDP_RELAY_SERVER 1
 			$bin -config /tmp/v2-ssr-reudp.json >/dev/null 2>&1 &
 			;;
@@ -279,6 +297,7 @@ start_redir_udp() {
 		    ;;
 		esac
 	fi
+	echo "$(date "+%Y-%m-%d %H:%M:%S") UDP协议类型:$utype" >>/tmp/ssrplus.log
 	return 0
 	}
 start_ss_switch() {
@@ -382,6 +401,10 @@ start_local() {
 	local local_server=$(nvram get socks5_enable)
 	[ "$local_server" == "nil" ] && return 1
 	[ "$local_server" == "same" ] && local_server=$GLOBAL_SERVER
+	
+	if [ "$local_server" = "same" ]; then
+		nvram set s5_type $d_type
+	fi
 	local type=$(nvram get s5_type)
 	local bin=$(find_bin $type)
 	[ ! -f "$bin" ] && echo "$(date "+%Y-%m-%d %H:%M:%S") Global_Socks5:Can't find $bin program, can't start!" >>/tmp/ssrplus.log && return 1
@@ -401,6 +424,12 @@ start_local() {
 		$bin -config /tmp/v2-ssr-local.json >/dev/null 2>&1 &
 		echo "$(date "+%Y-%m-%d %H:%M:%S") Global_Socks5:$($bin -version | head -1) Started!" >>/tmp/ssrplus.log
 		;;
+	vless)
+		lua /tmp/genvlessconfigconfig.lua $local_server tcp 0 $s5_port >/tmp/v2-ssr-local.json
+		sed -i 's/\\//g' /tmp/v2-ssr-local.json
+		$bin -config /tmp/v2-ssr-local.json >/dev/null 2>&1 &
+		echo "$(date "+%Y-%m-%d %H:%M:%S") Global_Socks5:$($bin -version | head -1) Started!" >>/tmp/ssrplus.log
+		;;
 	trojan)
 		lua /etc_ro/ss/gentrojanconfig.lua $local_server client $s5_port >/tmp/trojan-ssr-local.json
 		sed -i 's/\\//g' /tmp/trojan-ssr-local.json
@@ -414,6 +443,7 @@ start_local() {
 		;;
 	esac
 	local_enable=1
+	echo "$(date "+%Y-%m-%d %H:%M:%S") Socks5协议类型:$type" >>/tmp/ssrplus.log
 	return 0
 }
 
