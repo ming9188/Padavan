@@ -1288,7 +1288,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 			} else if (type == "v2ray" || type=="vless") {
 				
 				if(document.getElementById("v2_xtls").checked){
-					//document.getElementById("v2_tls").value=2;
+					document.getElementById("v2_tls").value=2;
 				}
 
 				var DataObj = {
