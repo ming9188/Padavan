@@ -3606,7 +3606,8 @@ apply_cgi(const char *url, webs_t wp)
 	}
 	else if (!strcmp(value, " Reboot "))
 	{
-	    sys_reboot();
+	    	notify_rc("manual_wan_disconnect");
+		sys_reboot();
 		return 0;
 	}
 	else if (!strcmp(value, " Shutdown "))
