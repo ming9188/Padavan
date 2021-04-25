@@ -120,10 +120,10 @@ local type=$stype
 		v2_bin="/usr/bin/v2ray"
 		v2ray_enable=1
 		if [ "$2" = "1" ]; then
-		lua /tmp/genvlessconfig.lua $1 udp 1080 >/tmp/v2-ssr-reudp.json
+		lua /etc_ro/ss/genvlessconfig.lua $1 udp 1080 >/tmp/v2-ssr-reudp.json
 		sed -i 's/\\//g' /tmp/v2-ssr-reudp.json
 		else
-		lua /tmp/genvlessconfig.lua $1 tcp 1080 >$v2_json_file
+		lua /etc_ro/ss/genvlessconfig.lua $1 tcp 1080 >$v2_json_file
 		sed -i 's/\\//g' $v2_json_file
 		fi
 		;;
