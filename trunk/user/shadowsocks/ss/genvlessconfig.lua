@@ -16,7 +16,7 @@ then
 	outbound_security = "tls"
 end
 
-local v2ray = {
+local vless = {
 log = {
 	-- error = "/tmp/ssrplus.log",
 loglevel = "warning"
@@ -125,4 +125,4 @@ outboundDetour = {
 		}
 	}
 }
-print(cjson.encode(v2ray))
+print(cjson.encode(vless))
