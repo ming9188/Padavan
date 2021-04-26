@@ -58,7 +58,7 @@ outbound = {
 							id = server.vmess_id,
 						flow = (server.xtls == '1') and (server.vless_flow and server.vless_flow or "xtls-rprx-direct") or nil,
 						encryption = server.security,
-						level = 0
+						level = tonumber(server.alter_id)
 					}
 				}
 			}
@@ -70,7 +70,7 @@ outbound = {
 		security = outbound_security,
 		tlsSettings = (outbound_security == "tls") and {serverName=server.tls_host,} or nil,
 		xtlsSettings = (outbound_security == "xtls") and {serverName=server.tls_host,} or nil,
-		tcpSettings = (server.transport == "tcp") and {
+		tcpSettings = (server.transport == "tcp"  and server.tls ~= '2'  and server.tls ~= '1') and {
 			header = {
 				type = server.tcp_guise,
 				request = {
