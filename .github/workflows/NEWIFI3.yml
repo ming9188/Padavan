@@ -48,7 +48,7 @@ jobs:
         ln -s 1.16.3 1.15.11
     - name: Clone source code
       run: |
-        git clone --depth=1 https://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@github.com/kkddcclloo/Padavan.git /opt/rt-n56u
+        git clone --depth=1 https://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@github.com/kkddcclloo/Padavan.git /opt/rt-n56u
         cd /opt/rt-n56u/toolchain-mipsel
         sh dl_toolchain.sh
         mkdir -p /opt/images/
