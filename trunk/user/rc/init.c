@@ -549,6 +549,7 @@ init_main_loop(void)
 int
 sys_exit(void)
 {
+	notify_rc("manual_wan_disconnect");
 #ifdef MTD_FLASH_32M_REBOOT_BUG
     doSystem("/sbin/mtd_storage.sh %s", "save");
 	system("/bin/mtd_write -r unlock mtd1");
