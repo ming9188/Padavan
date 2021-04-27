@@ -9,7 +9,6 @@ local servertmp = ssrindext:read("*all")
 local server = cjson.decode(servertmp)
 if (server.tls == '2')
 then
-	server.xtls='1'
 	outbound_security = "xtls"
 elseif (server.tls == '1')
 then
@@ -56,7 +55,7 @@ outbound = {
 				users = {
 					{
 							id = server.vmess_id,
-						flow = (server.xtls == '1') and (server.vless_flow and server.vless_flow or "xtls-rprx-direct") or nil,
+							flow = ((server.flow == '1') and "xtls-rprx-direct") or ((server.flow == '2') and "xtls-rprx-splice") or nil,
 						encryption = server.security,
 						level = tonumber(server.alter_id)
 					}
@@ -70,7 +69,7 @@ outbound = {
 		security = outbound_security,
 		tlsSettings = (outbound_security == "tls") and {serverName=server.tls_host,} or nil,
 		xtlsSettings = (outbound_security == "xtls") and {serverName=server.tls_host,} or nil,
-		tcpSettings = (server.transport == "tcp"  and server.tls ~= '2'  and server.tls ~= '1') and {
+		tcpSettings = (server.transport == "tcp"  and server.tls ~= '2' ) and {
 			header = {
 				type = server.tcp_guise,
 				request = {
