@@ -76,16 +76,9 @@
 			}
 			}); 
 			$j("#v2_tls").change(function() { 
-			if($j("#v2_tls").is(':checked')){
-			document.getElementById('v2_tls').value=1;
+			if(document.getElementById('v2_tls').value != '0'){
 			showhide_div('row_tj_tls_host', 1);
-			}
-			else if($j("#v2_xtls").is(':checked')){
-			document.getElementById('v2_xtls').value=2;
-			showhide_div('row_tj_tls_host', 1);
-			}
-			else{
-			document.getElementById('v2_tls').value=0;
+			}else{			
 			showhide_div('row_tj_tls_host', 0);
 			}
 			});
@@ -226,7 +219,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 			showhide_div('row_v2_net', 0);
 			showhide_div('row_v2_security', 0);
 			showhide_div('row_v2_tls', 0);
-			showhide_div('row_v2_xtls', 0);
+			showhide_div('row_v2_flow', 0);
 			showhide_div('row_v2_type_tcp', 0);
 			showhide_div('row_v2_type', 0);
 			showhide_div('row_v2_vid', 0);
@@ -259,10 +252,11 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 				showhide_div('row_v2_aid', 1);
 				showhide_div('row_v2_vid', 1);
 				showhide_div('row_v2_security', 1);
+				document.getElementById("v2_security").value = 'none';
 				showhide_div('row_v2_net', 1);
 				showhide_div('row_v2_type', 1);
 				showhide_div('row_v2_tls', 1);
-				showhide_div('row_v2_xtls', 1);
+				showhide_div('row_v2_flow', 1);
 				showhide_div('row_v2_mux', 1);
 				showhide_div('row_tj_tls_host', 1);
 				showhide_div('row_ssp_insecure', 1);
@@ -725,10 +719,9 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 			document.getElementById("v2_tcp_guise").value = 'none';
 			document.getElementById("v2_http_host").value = '';
 			document.getElementById("v2_http_path").value = '';
-			document.getElementById("v2_tls").value = 0;
-			document.getElementById("v2_tls").checked = false;
-			document.getElementById("v2_xtls").value = 0;
-			document.getElementById("v2_xtls").checked = false;
+			document.getElementById("v2_tls").value = '0';
+			document.getElementById("v2_flow").value = '0';
+			//document.getElementById("v2_tls").checked = false;
 			document.getElementById("ssp_tls_host").value = '';
 			//"v2 tcp"
 			document.getElementById("v2_kcp_guise").value = 'none';
@@ -786,15 +779,13 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 				document.getElementById("v2_security").value = getProperty(ss, 'security', 'none');
 				document.getElementById("v2_vmess_id").value = getProperty(ss, 'vmess_id', '');
 				document.getElementById("v2_alter_id").value = getProperty(ss, 'alter_id', '');
-				if (type=="vless") {document.getElementById("v2_alter_id").value =0}
 				document.getElementById("v2_transport").value = transport;
 				document.getElementById("v2_tcp_guise").value = getProperty(ss, 'tcp_guise', 'none');
 				document.getElementById("v2_http_host").value = getProperty(ss, 'http_host', '');
 				document.getElementById("v2_http_path").value = getProperty(ss, 'http_path', '');
-				document.getElementById("v2_tls").value = getProperty(ss, 'tls', 0);
-				document.getElementById("v2_tls").checked =  document.getElementById("v2_tls").value == 1;
-				document.getElementById("v2_xtls").value = getProperty(ss, 'tls', 0);
-				document.getElementById("v2_xtls").checked =  document.getElementById("v2_xtls").value == 2;
+				document.getElementById("v2_tls").value = getProperty(ss, 'tls', '0');
+				document.getElementById("v2_flow").value = getProperty(ss, 'flow', '0');
+				//document.getElementById("v2_tls").checked =  document.getElementById("v2_tls").value != 0;
 				document.getElementById("ssp_tls_host").value = getProperty(ss, 'tls_host', '');
 				if (transport == "kcp") {
 					document.getElementById("v2_kcp_guise").value = getProperty(ss, 'kcp_guise', 'none');
@@ -818,8 +809,8 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 			} else if (type == "trojan") {
 				document.getElementById("ssp_insecure").value = getProperty(ss, 'insecure', 0);
 				document.getElementById("ssp_insecure").checked =  document.getElementById("ssp_insecure").value != 0;
-				document.getElementById("v2_tls").value = getProperty(ss, 'tls', 0);
-				document.getElementById("v2_tls").checked =  document.getElementById("v2_tls") != 0;
+				document.getElementById("v2_tls").value = getProperty(ss, 'tls', '0');
+				//document.getElementById("v2_tls").checked =  document.getElementById("v2_tls") != 0;
 				document.getElementById("ssp_tls_host").value = getProperty(ss, 'tls_host', '');
 			} else if (type == "socks5") {
 				//
@@ -1058,69 +1049,109 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 				s.innerHTML = "<font color='green'>导入Shadowsocks配置信息成功</font>";
 				return false;
 			}else if (ssu[0] == "vless") {
-				var ssm = {};
-				var sstr = decodeURIComponent(ssu[1]);
-				var ssu = sstr.split('#');
-				ssm["ps"]=ssu[1];				
-				ssu = ssu[0].split('@');
-				ssm["id"]=ssu[0];
-				ssu = ssu[1].split(':');
-				ssm["add"]=ssu[0];
-				ssu = ssu[1].split('?');
-				ssm["port"]=ssu[0];
-
-				var arr = ssu[1].split('&');
-				for (var i = 0; i < arr.length; i++) {
-					var subArr = arr[i].split('=');
-					var key = decodeURIComponent(subArr[0]);
-					var value = decodeURIComponent(subArr[1]);
-					ssm[key] = value;
+				var ploc = ssu[1].indexOf("#");
+				if (ploc > 0) {
+					url0 = ssu[1].substr(0, ploc);
+					param = ssu[1].substr(ploc + 1);
+				} else {
+					url0 = ssu[1]
 				}
-				ssm["net"]=ssm["type"];
-				ssm["ws_host"]=ssm["host"];
-				ssm["ws_path"]=ssm["path"];
-				//ssm["security"]=ssm["encryption"];
-				//document.write(JSON.stringify(ssm, null, "\t"));
-
-				var ploc = sstr.indexOf("/?");
+				if (param != undefined) {
+					document.getElementById('ssp_name').value = decodeURI(param);
+				}
+				var sstr = url0;
+				var team = sstr.split('@');
+				var password = team[0]
+				var serverPart = team[1].split(':');
+				var port = serverPart[1].split('?')[0];
+				document.getElementById('ssp_server').value = serverPart[0];
+				document.getElementById('ssp_prot').value = port;
+				document.getElementById('v2_vmess_id').value = password;
+				document.getElementById('v2_alter_id').value = "0";		
+				
+				ploc = sstr.indexOf("?");
+				if (ploc > 0) {
+					url0 = sstr.substr(0, ploc);
+					param = sstr.substr(ploc + 1);
+				}
+				var pdict = {};
+				if (param.length > 2) {
+					var a = param.split('&');
+					for (var i = 0; i < a.length; i++) {
+						var b = a[i].split('=');
+						pdict[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
+					}
+				}
+				
 				document.getElementById('ssp_type').value = "vless";
 				document.getElementById('ssp_type').dispatchEvent(event);
+						
+				document.getElementById('v2_security').value = pdict['encryption'];
 				
-				document.getElementById('ssp_name').value = ssm.ps;
-				document.getElementById('ssp_server').value = ssm.add;
-				document.getElementById('ssp_prot').value = ssm.port;
-				document.getElementById('v2_alter_id').value = 0;
-				document.getElementById('v2_vmess_id').value = ssm.id;
-				if (ssm.net == "tcp") {
-					document.getElementById('v2_tcp_guise').value = ssm.type;
-					document.getElementById('v2_http_host').value = ssm.host;
-					document.getElementById('v2_http_path').value = ssm.path;
+				
+				if (pdict['type'] == "tcp") {
+					if (pdict['guise'] != undefined) {
+					    document.getElementById('v2_tcp_guise').value = "http";
+					    document.getElementById('v2_http_host').value = pdict['host'];
+					    if (pdict['path'] != undefined){
+					            document.getElementById('v2_http_path').value = pdict['path'];
+						}
+					    else
+					    	{
+						    document.getElementById('v2_http_path').value = '/';
+						}
+					}
+					else
+					{
+					    document.getElementById('v2_kcp_guise').value = "none";
+					}
 				} else {
-					document.getElementById('v2_kcp_guise').value = ssm.type;
+					document.getElementById('v2_kcp_guise').value = "none";
 				}
-				document.getElementById('v2_transport').value = ssm.net;
+				document.getElementById('v2_transport').value = pdict['type'];
 				document.getElementById('v2_transport').dispatchEvent(event);
-				if (ssm.net == "ws") {
-					document.getElementById('v2_ws_host').value = ssm.host;
-					document.getElementById('v2_ws_path').value = ssm.path;
+				
+				if (pdict['type'] == "ws") {
+					document.getElementById('v2_ws_host').value = pdict['host'];
+					document.getElementById('v2_ws_path').value = pdict['path'];
 				}
-				if (ssm.net == "h2") {
-					document.getElementById('v2_h2_host').value = ssm.host;
-					document.getElementById('v2_h2_path').value = ssm.path;
+				if (pdict['type'] == "h2") {
+					document.getElementById('v2_h2_host').value = pdict['host'];
+					document.getElementById('v2_h2_path').value = pdict['path'];
 				}
-				if (ssm.security == "tls") {
-					document.getElementById('v2_tls').value = 1;
-					document.getElementById('v2_tls').checked = true;
-					//document.getElementById('ssp_insecure').value = 1;
-					//document.getElementById('ssp_insecure').checked = true;
-					document.getElementById('ssp_tls_host').value = ssm.host;
+				if (pdict['security'] == "tls") {
+					document.getElementById('v2_tls').value = '1';
+					document.getElementById('v2_flow').value = '0';
+					showhide_div('row_v2_flow', 0);
+					//document.getElementById('v2_tls').checked = true;
+					document.getElementById('ssp_insecure').value = 0;
+					document.getElementById('ssp_insecure').checked = false;
+					document.getElementById('ssp_tls_host').value = pdict['host'];
 				}
-				if (ssm.security == "xtls") {
-					document.getElementById('v2_xtls').value = 2;
-					document.getElementById('v2_xtls').checked = true;
-					//document.getElementById('ssp_insecure').value = 1;
-					//document.getElementById('ssp_insecure').checked = true;
-					document.getElementById('ssp_tls_host').value = ssm.host;
+				if (pdict['security'] == "xtls") {
+					document.getElementById('v2_tls').value = '2';
+					showhide_div('row_v2_flow', 1);
+					if (pdict['flow'] != undefined) {
+					    if(pdict['flow'] == 'xtls-rprx-direct'){
+					    	document.getElementById('v2_flow').value = '1';
+					    }
+					    else if(pdict['flow'] == 'xtls-rprx-splice'){
+					    	document.getElementById('v2_flow').value = '2';
+					    }
+					    else
+					    {
+					    	document.getElementById('v2_flow').value = '0';
+					    }
+					    
+					}
+					else
+					{
+					    document.getElementById('v2_flow').value = '1';
+					}
+					//document.getElementById('v2_tls').checked = true;
+					document.getElementById('ssp_insecure').value = 0;
+					document.getElementById('ssp_insecure').checked = false;
+					document.getElementById('ssp_tls_host').value = pdict['host'];
 				}
 				s.innerHTML = "<font color='green'>导入vless配置信息成功</font>";
 				return false;
@@ -1181,9 +1212,9 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 					document.getElementById('v2_h2_host').value = ssm.host;
 					document.getElementById('v2_h2_path').value = ssm.path;
 				}
-				if (ssm.tls == "tls" || ssm.tls == "xtls") {
-					document.getElementById('v2_tls').value = 1;
-					document.getElementById('v2_tls').checked = true;
+				if (ssm.tls == "tls") {
+					document.getElementById('v2_tls').value = '1';
+					//document.getElementById('v2_tls').checked = true;
 					document.getElementById('ssp_insecure').value = 1;
 					document.getElementById('ssp_insecure').checked = true;
 					document.getElementById('ssp_tls_host').value = ssm.host;
@@ -1287,11 +1318,6 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 					coustom: "1",
 				}
 			} else if (type == "v2ray" || type=="vless") {
-				
-				if(document.getElementById("v2_xtls").checked){
-					document.getElementById("v2_tls").value=2;
-				}
-				if (type=="vless") {document.getElementById("v2_alter_id").value =0}
 				var DataObj = {
 					type: document.getElementById("ssp_type").value,
 					alias: document.getElementById("ssp_name").value,
@@ -1307,6 +1333,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 					http_host: document.getElementById("v2_http_host").value,
 					http_path: document.getElementById("v2_http_path").value,
 					tls: document.getElementById("v2_tls").value,
+					flow: document.getElementById("v2_flow").value,
 					tls_host: document.getElementById("ssp_tls_host").value,
 					coustom: "1",
 				}
@@ -2074,7 +2101,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 														</tr>
 														<!--V2RAY-->
 														<tr id="row_v2_aid" style="display:none;">
-															<th width="50%">AlterId</th>
+															<th width="50%">AlterId(Level)</th>
 															<td>
 																<input type="text" class="input" size="15"
 																	name="v2_alter_id" id="v2_alter_id"
@@ -2082,7 +2109,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 															</td>
 														</tr>
 														<tr id="row_v2_vid" style="display:none;">
-															<th width="50%">(UUID)</th>
+															<th width="50%">VmessId/VlessId (UUID)</th>
 															<td>
 																<input type="text" class="input" size="15"
 																	name="v2_vmess_id" id="v2_vmess_id"
@@ -2278,21 +2305,29 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 															</td>
 														</tr>
 														<tr id="row_v2_tls" style="display:none;">
-															<th>TLS</th>
+															<th>TLS/XTLS</th>
 															<td>
-																<input type="radio" name="v2_tls" id="v2_tls" value=1>
-
+																<select name="v2_tls" id="v2_tls" class="input" style="width: 200px;">
+																	<option value="0">未配置</option>
+																	<option value="1">tls</option>
+																	<option value="2">xtls</option>
+																</select>
+																
 															</td>
 														</tr>
-														<tr id="row_v2_xtls" style="display:none;">
-															<th>XTLS</th>
+														<tr id="row_v2_flow" style="display:none;">
+															<th>XTLS flow</th>
 															<td>
-																<input type="radio" name="v2_tls" id="v2_xtls" value=2>
-
+																<select name="v2_flow" id="v2_flow" class="input" style="width: 200px;">
+																	<option value="0">未配置</option>
+																	<option value="1">xtls-rprx-direct</option>
+																	<option value="2">xtls-rprx-splice</option>
+																</select>
+																
 															</td>
 														</tr>
 														<tr id="row_tj_tls_host" style="display:none;">
-															<th>TLS Host</th>
+															<th>TLS/XTLS Host</th>
 															<td>
 																<input type="text" class="input" size="15"
 																	name="ssp_tls_host" id="ssp_tls_host"
