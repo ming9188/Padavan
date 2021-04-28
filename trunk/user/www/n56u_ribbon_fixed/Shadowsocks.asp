@@ -1424,6 +1424,11 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 			var result = JSON.parse(db_ss[key]);
 			document.getElementById("d_type").value = result.type;
 		}
+		function showsbackupdlinkList() {
+			var key = "ssconf_basic_json_" + document.getElementById("backupnodeList").value;
+			var result = JSON.parse(db_ss[key]);
+			document.getElementById("backupd_type").value = result.type;
+		}
 		function showsudlinkList() {
 			var key = "ssconf_basic_json_" + document.getElementById("u_nodeList").value;
 			var result = JSON.parse(db_ss[key]);
@@ -1484,6 +1489,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 			<input type="hidden" name="ssp_staticnum_x_0" value="<% nvram_get_x("SspList", "ssp_staticnum_x"); %>"
 				readonly="1" />
 			<input type="hidden" id="d_type" name="d_type" value="<% nvram_get_x("","d_type"); %>">
+			<input type="hidden" id="backupd_type" name="backupd_type" value="<% nvram_get_x("","backupd_type"); %>">
 			<input type="hidden" id="ud_type" name="ud_type" value="<% nvram_get_x("","ud_type"); %>">
 			<input type="hidden" id="s5_type" name="s5_type" value="<% nvram_get_x("","s5_type"); %>">
 			<input type="hidden" name="ss_schedule" value="<% nvram_get_x("", "ss_schedule"); %>" disabled>
@@ -1607,7 +1613,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 														</th>
 														<td>
 															<select name="backup_server" id="backupnodeList"
-																style="width: 200px;" onchange="showsdlinkList()">
+																style="width: 200px;" onchange="showsbackupdlinkList()">
 																<option value="nil">停用</option>
 															</select>
 														</td>
