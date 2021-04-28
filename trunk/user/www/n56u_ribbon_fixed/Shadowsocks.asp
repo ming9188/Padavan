@@ -78,6 +78,11 @@
 			$j("#v2_tls").change(function() { 
 			if(document.getElementById('v2_tls').value != '0'){
 			showhide_div('row_tj_tls_host', 1);
+				if(document.getElementById('v2_tls').value == '2'){
+					showhide_div('row_v2_flow', 1);
+				}else{
+					showhide_div('row_v2_flow', 0);
+				}
 			}else{			
 			showhide_div('row_tj_tls_host', 0);
 			}
@@ -256,7 +261,11 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 				showhide_div('row_v2_net', 1);
 				showhide_div('row_v2_type', 1);
 				showhide_div('row_v2_tls', 1);
-				showhide_div('row_v2_flow', 1);
+				if(document.getElementById('v2_tls').value == '2'){
+					showhide_div('row_v2_flow', 1);
+				}else{
+					showhide_div('row_v2_flow', 0);
+				}
 				showhide_div('row_v2_mux', 1);
 				showhide_div('row_tj_tls_host', 1);
 				showhide_div('row_ssp_insecure', 1);
