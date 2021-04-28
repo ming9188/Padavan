@@ -401,6 +401,11 @@ puship=1
 
 EOF
 
+echo "file=\$HOME/.dynv6.addr6" >> "$script_postw"
+
+
+echo "[ -e \$file ] && old=\`cat \$file\`" >> "$script_postw"
+
 echo "if [ \"\$dynv6_puship\" -eq 1 ]; then" >> "$script_postw"
 echo "	i=0" >> "$script_postw"
 echo "	while [ -z \"\$address\" ];"   >> "$script_postw"
@@ -414,9 +419,13 @@ echo "			break" >> "$script_postw"
 echo "		fi" >> "$script_postw"
 echo "	done"  >> "$script_postw"
 echo "	if [ \"\$address\" != \"nil\" ];then" >> "$script_postw"
+echo "		if [ \"\$old\" = \"\$address\" ]; then" >> "$script_postw"
+echo "			logger -t \"IPV6推送\" \" 地址未变化,不需要推送！\" "  >> "$script_postw"
+echo "			exit" >> "$script_postw"
+echo "		fi"  >> "$script_postw"
 echo "		curl -L -s \"https://dynv6.com/api/update?hostname=\${dynv6_hostname}&ipv6=\${address}&token=\${dynv6_token}\"" >> "$script_postw"
 echo "	fi"  >> "$script_postw"
-echo "	logger -t \"dynv6.com更新IP\" \" \$address\" "  >> "$script_postw"
+echo "	logger -t \"IPV6推送\" \"dynv6.com更新IP \$address\" "  >> "$script_postw"
 echo "fi"  >> "$script_postw"
 
 echo ""  >> "$script_postw"
@@ -449,6 +458,10 @@ echo "			hostIP6='上网'\${i}'分钟，未得到ipv6!'" >> "$script_postw"
 echo "			break" >> "$script_postw"
 echo "		fi" >> "$script_postw"
 echo "	done"  >> "$script_postw"
+echo "		if [ \"\$old\" = \"\$address\" ]; then" >> "$script_postw"
+echo "			logger -t \"IPV6推送\" \" 地址未变化,不需要推送！\" "  >> "$script_postw"
+echo "			exit" >> "$script_postw"
+echo "		fi"  >> "$script_postw"
 echo "	if [ \"\$dynv6_puship\" -eq 1 ]; then" >> "$script_postw"
 echo "		hostIP6=\${hostIP6}\"\n\n http://\"\${dynv6_hostname}\":\"\${hostport}" >> "$script_postw"
 echo "	fi" >> "$script_postw"
@@ -461,8 +474,14 @@ desp=${desp}"'\${hostIP6}'"
 desp=${desp}'"},"safe":0,"enable_id_trans": 0,"enable_duplicate_check": 0,"duplicate_check_interval": 1800}'
 echo "	desp='"${desp}"'"  >> "$script_postw"
 echo "	curl -H \"Content-Type: application/json;charset=utf-8\" -X POST -L -s  -d \"\${desp}\"  \"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=\${access_token}\" "   >> "$script_postw" 
-echo "	logger -t \"微信推送\" \" \$hostIP6\" "  >> "$script_postw"
+echo "	logger -t \"IPV6推送\" \"微信推送 \$hostIP6\" "  >> "$script_postw"
 echo "fi"  >> "$script_postw"
+echo ""  >> "$script_postw"
+echo "	if [ !-z \"\$address\" ]; then" >> "$script_postw"
+echo "		echo \$address > \$file " >> "$script_postw"
+echo "		logger -t \"IPV6推送\" \" \$address写入文件\$file！\" "  >> "$script_postw"
+echo "	fi"  >> "$script_postw"
+
 	chmod 755 "$script_postw"
 fi
 
