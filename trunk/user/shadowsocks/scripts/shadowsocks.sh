@@ -34,6 +34,7 @@ GLOBAL_SERVER=`nvram get global_server`
 socks=""
 opt_src=`nvram get opt_src`
 tcptype=`nvram get d_type`
+backupd_type=`nvram get backupd_type`
 udptype=`nvram get ud_type`
 sockstype=`nvram get s5_type`
 find_bin() {
@@ -640,8 +641,13 @@ ressp() {
 	TMP_SERVER=$GLOBAL_SERVER
 	GLOBAL_SERVER=$BACKUP_SERVER
 	BACKUP_SERVER=$TMP_SERVER
+	TMP_type=$backupd_type
+	backupd_type=$tcptype
+	tcptype=$TMP_type
 	`nvram set global_server=$GLOBAL_SERVER`
 	`nvram set backup_server=$BACKUP_SERVER`
+	`nvram set d_type=$tcptype`
+	`nvram set backupd_type=$backupd_type`
 	logger -t "SS" "成功切换到$GLOBAL_SERVER号服务器"
 	logger -t "SS" "内网IP控制为:$lancons"
 	ssp_start
