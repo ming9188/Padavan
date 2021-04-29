@@ -477,7 +477,7 @@ echo "	curl -H \"Content-Type: application/json;charset=utf-8\" -X POST -L -s  -
 echo "	logger -t \"IPV6推送\" \"微信推送 \$hostIP6\" "  >> "$script_postw"
 echo "fi"  >> "$script_postw"
 echo ""  >> "$script_postw"
-echo "	if [ !-z \"\$address\" ]; then" >> "$script_postw"
+echo "	if [ ! -z \"\$address\" ]; then" >> "$script_postw"
 echo "		echo \$address > \$file " >> "$script_postw"
 echo "		logger -t \"IPV6推送\" \" \$address写入文件\$file！\" "  >> "$script_postw"
 echo "	fi"  >> "$script_postw"
