@@ -401,7 +401,7 @@ puship=1
 
 EOF
 
-echo "file=\$HOME/.dynv6.addr6" >> "$script_postw"
+echo "file=/tmp/.dynv6.addr6" >> "$script_postw"
 
 
 echo "[ -e \$file ] && old=\`cat \$file\`" >> "$script_postw"
