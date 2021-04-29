@@ -423,8 +423,8 @@ echo "				logger -t \"IPV6推送\" \" 地址未变化,不需要推送！\" "  >>
 echo "				exit" >> "$script_postw"
 echo "			fi"  >> "$script_postw"
 echo "			curl -L -s \"https://dynv6.com/api/update?hostname=\${dynv6_hostname}&ipv6=\${address}&token=\${dynv6_token}\"" >> "$script_postw"
+echo "			logger -t \"IPV6推送\" \"dynv6.com更新IP \$address\" "  >> "$script_postw"
 echo "		fi"  >> "$script_postw"
-echo "		logger -t \"IPV6推送\" \"dynv6.com更新IP \$address\" "  >> "$script_postw"
 echo "	fi"  >> "$script_postw"
 
 echo ""  >> "$script_postw"
