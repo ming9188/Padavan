@@ -67,15 +67,17 @@ do
 	if [ "$current_ret" = 1 ] ;then
 	#当前代理错误，判断有无可用的服务器
 		if [ $(nvram get check_mode) = "1" ];then
-			echo "$(date "+%Y-%m-%d %H:%M:%S") 所有服务器挂掉了,关闭看看世界！" >> /tmp/ssrplus.log
-			nvram set ss_enable=0
+			echo "$(date "+%Y-%m-%d %H:%M:%S") 所有服务器挂掉了,重新循环切换,如需停止,请手动关闭看看世界！" >> /tmp/ssrplus.log
+			###nvram set ss_enable=0
 			nvram set check_mode=0
-			/usr/bin/shadowsocks.sh stop &
-			exit 0
+			###/usr/bin/shadowsocks.sh stop &
+			###exit 0
+		else
+			nvram set check_mode=1
 		fi
 		echo "$(date "+%Y-%m-%d %H:%M:%S") 检测到${CURRENT_SERVER}号服务器故障，切换到${BACKUP_SERVER}号服务器。" >> /tmp/ssrplus.log
 		/usr/bin/shadowsocks.sh stop &
-		nvram set check_mode=1 #停止标记
+		###nvram set check_mode=1 #停止标记
 		/usr/bin/shadowsocks.sh reserver &
 	fi
 done
