@@ -399,13 +399,38 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 					$j('#tab_ss_' + arrHashes[i]).parents('li').removeClass('active');
 				}
 			}
-			//refreshlog(curHash);
+			
 			window.location.hash = curHash;
+			if (curHash == '#log'){
+				refreshlog(curHash);
+			}
 		}
 		function refreshlog(curHash){
 		
 			if (curHash == '#log'){
-				window.location.reload();
+				var $j = jQuery.noConflict();
+				$j.get('/ssr_log.asp', function(data){
+				// fix for ie
+				if($j.browser.msie && !is_ie11p)
+					data = data.nl2br();
+				if($j("#ssrplus_log").val() == ''){
+					$j("#ssrplus_log").text(data);
+					$j("#ssrplus_log").prop('scrollTop', $j("#ssrplus_log").prop('scrollHeight'));
+					$j("#ssrplus_logscrATop").val($j("#ssrplus_log").prop('scrollTop'));
+				}else{
+					var scrMaxTop = $j("#ssrplus_log").prop('scrollHeight')
+					var scrTop = $j("#ssrplus_log").prop('scrollTop');
+					$j("#ssrplus_log").text(data);
+					var scrITop = scrMaxTop - scrTop;
+					if($j("#ssrplus_logscrATop").val() == scrTop || scrITop < 629){
+						$j("#ssrplus_log").prop('scrollTop', scrMaxTop);
+						$j("#ssrplus_logscrATop").val($j("#ssrplus_log").prop('scrollTop'));
+					}else{
+						$j("#ssrplus_log").prop('scrollTop', scrTop);
+					}	
+				}
+				});
+				//window.location.reload();
 			}
 		}
 		function getHash() {
@@ -2664,6 +2689,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 											</div>
 											<div id="wnd_ss_log" style="display:none">
 												<table width="100%" cellpadding="4" cellspacing="0" class="table">
+													<tr><td style="text-align: left;display:none;"><input type="hidden" id="ssrplus_logscrATop" value=""></td><tr>
 													<tr>
 														<td colspan="3"
 															style="border-top: 0 none; padding-bottom: 0px;">
@@ -2680,7 +2706,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 																style="width: 200px">
 														</td>
 														<td width="75%" style="text-align: right; padding-bottom: 0px;">
-															<input type="button" onClick="clearLog();" value="<#CTL_clear#>" class="btn btn-primary" style="width: 200px">
+															<input type="button" onClick="clearLog();refreshlog('#log');" value="<#CTL_clear#>" class="btn btn-primary" style="width: 200px">
 
 																
 														</td>
