@@ -42,11 +42,11 @@ jobs:
         go-version: ^1.16
       id: go  
     #modiy go language
-    - name: Set Golang
-      run: |
-        cd /opt/hostedtoolcache/go
-        rm -rf /opt/hostedtoolcache/go/1.15.11
-        ln -s 1.16.3 1.15.11
+    #- name: Set Golang
+    #  run: |
+    #    cd /opt/hostedtoolcache/go
+    #    rm -rf /opt/hostedtoolcache/go/1.15.11
+    #    ln -s 1.16.3 1.15.11
     - name: Clone source code
       run: |
         git clone --depth=1 https://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@github.com/kkddcclloo/Padavan.git /opt/rt-n56u
