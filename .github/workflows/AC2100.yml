@@ -45,7 +45,7 @@ jobs:
     - name: Set Golang
       run: |
         cd /opt/hostedtoolcache/go
-        rm -rf /opt/hostedtoolcache/go/1.15.11
+        rm -rf /opt/hostedtoolcache/go/1.15.12
         ln -s 1.16.4 1.15.12
     - name: Clone source code
       run: |
