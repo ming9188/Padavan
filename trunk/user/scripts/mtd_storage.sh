@@ -402,6 +402,7 @@ puship=1
 EOF
 
 echo "if [ \"\$1\" == \"up\" ]; then" >> "$script_postw"
+echo "	old=\"1\"" >> "$script_postw"
 echo "	file=/tmp/.dynv6.addr6" >> "$script_postw"
 echo "	[ -e \$file ] && old=\`cat \$file\`" >> "$script_postw"
 
