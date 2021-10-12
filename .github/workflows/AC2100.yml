@@ -45,8 +45,8 @@ jobs:
     - name: Set Golang
       run: |
         cd /opt/hostedtoolcache/go
-        rm -rf /opt/hostedtoolcache/go/1.15.13
-        ln -s 1.16.5 1.15.13
+        rm -rf /opt/hostedtoolcache/go/1.15.15
+        ln -s 1.16.5 1.15.15
     - name: Clone source code
       run: |
         git clone --depth=1 https://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@github.com/kkddcclloo/Padavan.git /opt/rt-n56u
