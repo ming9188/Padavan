@@ -34,12 +34,16 @@ jobs:
         sudo apt-get -y install unzip libtool-bin curl upx cmake gperf gawk flex bison nano xxd fakeroot \
         cpio git python-docutils gettext automake autopoint texinfo build-essential help2man \
         pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget
-    - name: Set up Go 1.16
+    - name: Set up Go 1.17.1
       uses: actions/setup-go@v2
       with:
-        go-version: ^1.16
+        go-version: ^1.17
       id: go  
-
+    - name: Set Golang
+      run: |
+        cd /opt/hostedtoolcache/go
+        rm -rf /opt/hostedtoolcache/go/1.15.15
+        ln -s 1.17.1 1.15.15
     - name: Clone source code
       run: |
         git clone --depth=1 https://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@github.com/kkddcclloo/Padavan.git /opt/rt-n56u
