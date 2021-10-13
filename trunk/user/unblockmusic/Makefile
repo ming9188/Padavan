@@ -1,6 +1,6 @@
 THISDIR = $(shell pwd)
 export GO111MODULE=on
-export GOPROXY=proxy.golang.org
+export GOPROXY=https://www.goproxy.io
 UM_VERSION := 0.2.12
 UM_URL := https://github.com/cnsilvan/UnblockNeteaseMusic/archive/$(UM_VERSION).tar.gz
 
