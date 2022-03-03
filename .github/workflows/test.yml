@@ -38,4 +38,5 @@ jobs:
         rm -rf /opt/hostedtoolcache/go/1.15.15
         ls /opt/hostedtoolcache/go/
         ln -s ^1.17 1.15.15
+        echo "new"
         ls /opt/hostedtoolcache/go/
