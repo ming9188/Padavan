@@ -34,7 +34,8 @@ jobs:
         sudo apt-get -y install unzip libtool-bin curl upx cmake gperf gawk flex bison nano xxd fakeroot \
         cpio git python-docutils gettext automake autopoint texinfo build-essential help2man \
         pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget
-    - name: Set up Go 1.17.1
+        
+    - name: Set up Go ^1.17
       uses: actions/setup-go@v2
       with:
         go-version: ^1.17
