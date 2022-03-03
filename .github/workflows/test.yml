@@ -25,7 +25,8 @@ jobs:
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive|
-
+      run: |
+      
     - name: Set up Go ^1.17
       uses: actions/setup-go@v2
       with:
