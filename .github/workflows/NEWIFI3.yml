@@ -36,7 +36,7 @@ jobs:
     
     - name: Clone source code
       run: |
-        git clone --depth=1 https://github.com/kkddcclloo/Pd.git /opt/rt-n56u
+        git clone --depth=1 https://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@github.com/kkddcclloo/Pd.git /opt/rt-n56u
         cd /opt/rt-n56u/toolchain-mipsel
         sh dl_toolchain.sh
         mkdir -p /opt/images/
