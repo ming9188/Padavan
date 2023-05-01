@@ -315,6 +315,9 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 			} else if (b == "ws") {
 				showhide_div('row_v2_webs_host', 1);
 				showhide_div('row_v2_webs_path', 1);
+			} else if (b == "grpc") {
+				showhide_div('row_tj_tls_host', 1);
+				showhide_div('row_v2_webs_path', 1);
 			} else if (b == "h2") {
 				showhide_div('row_v2_http2_host', 1);
 				showhide_div('row_v2_http2_path', 1);
@@ -768,6 +771,10 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 			//v2 ws
 			document.getElementById("v2_ws_host").value = '';
 			document.getElementById("v2_ws_path").value = '';
+			//v2 grpc
+			document.getElementById("ssp_tls_host").value = '';
+			document.getElementById("v2_ws_path").value = '';
+			
 			//v2 h2
 			document.getElementById("v2_h2_host").value = '';
 			document.getElementById("v2_h2_path").value = '';
@@ -831,6 +838,9 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 					document.getElementById("v2_write_buffer_size").value = getProperty(ss, 'write_buffer_size', '');
 				} else if (transport == "ws") {
 					document.getElementById("v2_ws_host").value = getProperty(ss, 'ws_host', '');
+					document.getElementById("v2_ws_path").value = getProperty(ss, 'ws_path', '');
+				} else if (transport == "grpc") {
+					document.getElementById("ssp_tls_host").value = getProperty(ss, 'tls_host', '');
 					document.getElementById("v2_ws_path").value = getProperty(ss, 'ws_path', '');
 				} else if (transport == "h2") {
 					document.getElementById("v2_h2_host").value = getProperty(ss, 'h2_host', '');
@@ -1144,7 +1154,10 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 				}
 				document.getElementById('v2_transport').value = pdict['type'];
 				document.getElementById('v2_transport').dispatchEvent(event);
-				
+				if (pdict['type'] == "grpc") {
+					document.getElementById('ssp_tls_host').value = pdict['sni'];
+					document.getElementById('v2_ws_path').value = pdict['path'];
+				}
 				if (pdict['type'] == "ws") {
 					document.getElementById('v2_ws_host').value = pdict['host'];
 					document.getElementById('v2_ws_path').value = pdict['path'];
@@ -1160,7 +1173,9 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 					//document.getElementById('v2_tls').checked = true;
 					document.getElementById('ssp_insecure').value = 0;
 					document.getElementById('ssp_insecure').checked = false;
-					document.getElementById('ssp_tls_host').value = pdict['host'];
+					if(pdict['host'] !=''){
+						document.getElementById('ssp_tls_host').value = pdict['host'];
+					}
 				}
 				if (pdict['security'] == "xtls") {
 					document.getElementById('v2_tls').value = '2';
@@ -1242,6 +1257,10 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 					document.getElementById('v2_ws_host').value = ssm.host;
 					document.getElementById('v2_ws_path').value = ssm.path;
 				}
+				if (ssm.net == "grpc") {
+					document.getElementById('ssp_tls_host').value = ssm.sni;
+					document.getElementById('v2_ws_path').value = ssm.path;
+				}
 				if (ssm.net == "h2") {
 					document.getElementById('v2_h2_host').value = ssm.host;
 					document.getElementById('v2_h2_path').value = ssm.path;
@@ -1251,7 +1270,9 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 					//document.getElementById('v2_tls').checked = true;
 					document.getElementById('ssp_insecure').value = 1;
 					document.getElementById('ssp_insecure').checked = true;
-					document.getElementById('ssp_tls_host').value = ssm.host;
+					if(ssm.host !=''){
+						document.getElementById('ssp_tls_host').value = ssm.host;
+					}
 				}
 				s.innerHTML = "<font color='green'>导入V2ray配置信息成功</font>";
 				return false;
@@ -1379,6 +1400,9 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 					DataObj.downlink_capacity = document.getElementById("v2_downlink_capacity").value;
 					DataObj.read_buffer_size = document.getElementById("v2_read_buffer_size").value;
 					DataObj.write_buffer_size = document.getElementById("v2_write_buffer_size").value;
+				} else if (document.getElementById("v2_transport").value == "grpc") {
+					DataObj.tls_host = document.getElementById("ssp_tls_host").value;
+					DataObj.ws_path = document.getElementById("v2_ws_path").value;
 				} else if (document.getElementById("v2_transport").value == "ws") {
 					DataObj.ws_host = document.getElementById("v2_ws_host").value;
 					DataObj.ws_path = document.getElementById("v2_ws_path").value;
@@ -1969,7 +1993,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 																	<option value="ss">SS</option>
 																	<option value="ssr">SSR</option>
 																	<option value="trojan">Trojan</option>
-																	<option value="v2ray">V2ray</option>
+																	<option value="v2ray">VMESS</option>
 																	<option value="vless">VLESS</option>
 																	<option value="socks5">SOCKS5</option>
 																</select>
@@ -2181,6 +2205,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 																	<option value="ws">WebSocket</option>
 																	<option value="h2">HTTP/2</option>
 																	<option value="quic">QUIC</option>
+																	<option value="grpc">grpc</option>
 																</select>
 															</td>
 														</tr>
@@ -2277,7 +2302,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 															</td>
 														</tr>
 														<tr id="row_v2_webs_path" style="display:none;">
-															<th width="50%">WebSocket Path</th>
+															<th width="50%">WebSocket/grpc Path</th>
 															<td>
 																<input type="text" class="input" size="15"
 																	name="v2_ws_path" id="v2_ws_path"
@@ -2367,7 +2392,7 @@ setTimeout('document.getElementById("btn_ctime").style.display="none";',1000);
 															</td>
 														</tr>
 														<tr id="row_tj_tls_host" style="display:none;">
-															<th>TLS/XTLS Host</th>
+															<th>TLS/XTLS/SNI Host</th>
 															<td>
 																<input type="text" class="input" size="15"
 																	name="ssp_tls_host" id="ssp_tls_host"
