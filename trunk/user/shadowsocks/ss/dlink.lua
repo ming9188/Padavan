@@ -147,6 +147,10 @@ local function processData(szType, content)
 			result.ws_host = info.host
 			result.ws_path = info.path
 		end
+		if info.net == 'grpc' then
+			result.tls_host = info.sni
+			result.ws_path = info.path
+		end
 		if info.net == 'h2' then
 			result.h2_host = info.host
 			result.h2_path = info.path
@@ -179,6 +183,9 @@ local function processData(szType, content)
 		if info.tls == "tls" or info.tls == "1" then
 			result.tls = "1"
 			result.tls_host = info.host
+			if info.host == "" then
+				result.tls_host = info.sni
+			end
 			result.insecure = 1
 		else
 			result.tls = "0"
@@ -219,6 +226,10 @@ local function processData(szType, content)
 				result.ws_host = params.host
 				result.ws_path = params.path
 			end
+			if info.net == 'grpc' then
+				result.tls_host = info.sni
+				result.ws_path = info.path
+			end
 			if result.transport == 'h2' then
 				result.h2_host = params.host
 				result.h2_path = params.path
@@ -251,6 +262,9 @@ local function processData(szType, content)
 			if params.security == "tls" or params.security == "1" then --传输层security
 				result.tls = "1"
 				result.tls_host = params.host
+				if params.host == "" then
+					result.tls_host = params.sni
+				end
 				result.insecure = 0
 			elseif params.security == "xtls" or params.security == "2" then
 				result.tls = "2"
