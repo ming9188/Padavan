@@ -87,6 +87,10 @@ log = {
 					Host = server.ws_host
 				} or nil,
 			} or nil,
+			grpcSettings = (server.transport == "grpc") and (server.ws_path ~= nil) and {
+				serviceName = server.ws_path,
+				multiMode=false
+			} or nil,
 			httpSettings = (server.transport == "h2") and {
 				path = server.h2_path,
 				host = server.h2_host,
