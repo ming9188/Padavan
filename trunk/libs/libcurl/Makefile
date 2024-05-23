@@ -1,5 +1,5 @@
-SRC_NAME=curl-7.72.0
-SRC_URL=https://github.com/curl/curl/releases/download/curl-7_65_3/curl-7.72.0.tar.xz
+SRC_NAME=curl-8.8.0
+SRC_URL=https://github.com/curl/curl/releases/download/curl-8_8_0/curl-8.8.0.tar.xz
 
 LDFLAGS += -Wl,-rpath-link=$(STAGEDIR)/lib
 
@@ -14,7 +14,7 @@ download_test:
 extract_test:
 	( if [ ! -d $(SRC_NAME) ]; then \
 		tar xf $(SRC_NAME).tar.xz; \
-		patch -d $(SRC_NAME) -p1 -i ../no_docs_test.patch; \
+	#	patch -d $(SRC_NAME) -p1 -i ../no_docs_test.patch; \
 	fi )
 
 config_test:
@@ -50,17 +50,18 @@ configure:
 		--disable-tls-srp \
 		--disable-libcurl-option \
 		--disable-threaded-resolver \
+		--disable-docs \
 		--without-gnutls \
-		--without-ca-bundle \
 		--without-libidn \
 		--without-libssh2 \
+		--without-libpsl \
 		--without-krb4 \
 		--without-nss \
+		--without-ca-path \
 		--with-ca-bundle=/etc/ssl/certs/ca-certificates.crt \
-                --with-ssl \
 		--with-random=/dev/urandom \
 		--with-zlib=$(STAGEDIR) \
-		--with-mbedtls=$(STAGEDIR) \
+		--with-ssl=$(STAGEDIR) \
 		--host=$(HOST_TARGET) \
 		--build=$(HOST_BUILD) ; \
 	)
